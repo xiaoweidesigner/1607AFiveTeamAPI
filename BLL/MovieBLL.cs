@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataService;
 using MODEL;
+using DataService;
 
-namespace DAL
+namespace BLL
 {
-    public class MovieDAL : ICommon<Movie>
+   public  class MovieBLL
     {
-        private static ICommon<Movie> dal;
-        public MovieDAL() {
-            if (dal == null)
+        private static ICommon<Movie> bll;
+        public MovieBLL()
+        {
+            if (bll == null)
             {
-                dal = new MovieDAL();
+                bll = new MovieBLL() as ICommon<Movie>;
             }
         }
         /// <summary>
@@ -24,10 +25,7 @@ namespace DAL
         /// <returns></returns>
         public int Add(Movie t)
         {
-            using (MyDbContext db = new MyDbContext()) {
-                db.Movie.Add(t);
-                return db.SaveChanges();
-            }
+            return bll.Add(t);
         }
         /// <summary>
         /// 根据id删除影片
@@ -36,11 +34,7 @@ namespace DAL
         /// <returns></returns>
         public int Del(int Id)
         {
-            using (MyDbContext db=new MyDbContext()) {
-              var m=  db.Movie.Find(Id);
-                db.Movie.Remove(m);
-                return db.SaveChanges();
-            }
+            return bll.Del(Id);
         }
         /// <summary>
         /// 显示影片信息
@@ -48,10 +42,7 @@ namespace DAL
         /// <returns></returns>
         public List<Movie> Show()
         {
-            using (MyDbContext db = new MyDbContext())
-            {
-                return db.Movie.ToList();
-            }
+            return bll.Show();
         }
         /// <summary>
         /// 根据Id查询影片
@@ -60,10 +51,7 @@ namespace DAL
         /// <returns></returns>
         public Movie ShowById(int Id)
         {
-            using (MyDbContext db = new MyDbContext())
-            {
-                return db.Movie.Find(Id);
-            }
+            return bll.ShowById(Id);
         }
         /// <summary>
         /// 修改影片信息
@@ -72,11 +60,7 @@ namespace DAL
         /// <returns></returns>
         public int Upd(Movie t)
         {
-            using (MyDbContext db = new MyDbContext())
-            {
-                db.Entry(t).State = System.Data.Entity.EntityState.Modified;
-                return db.SaveChanges();
-            }
+            return bll.Upd(t);
         }
     }
 }

@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataService;
+using DAL;
 using MODEL;
+using DataService;
 
-namespace DAL
+namespace BLL
 {
-    
-    public class MovieHallDAL : ICommon<MovieHall>
+   public  class MovieHallBLL
     {
-        private static ICommon<MovieHall> dal;
-        public MovieHallDAL() {
-            if (dal == null)
+        private static ICommon<MovieHall> bll;
+        public MovieHallBLL()
+        {
+            if (bll == null)
             {
-                dal = new MovieHallDAL();
+                bll = new MovieHallBLL() as ICommon<MovieHall>;
             }
         }
         /// <summary>
@@ -25,11 +26,7 @@ namespace DAL
         /// <returns></returns>
         public int Add(MovieHall t)
         {
-            using (MyDbContext db = new MyDbContext())
-            {
-                db.MovieHall.Add(t);
-                return db.SaveChanges();
-            }
+            return bll.Add(t);
         }
         /// <summary>
         /// 根据id删除影厅
@@ -38,11 +35,7 @@ namespace DAL
         /// <returns></returns>
         public int Del(int Id)
         {
-            using (MyDbContext db=new MyDbContext()) {
-                var mhall = db.MovieHall.Find(Id);
-                db.MovieHall.Remove(mhall);
-                return db.SaveChanges();
-            }
+            return bll.Del(Id);
         }
         /// <summary>
         /// 显示影厅信息
@@ -50,11 +43,7 @@ namespace DAL
         /// <returns></returns>
         public List<MovieHall> Show()
         {
-            using (MyDbContext db=new MyDbContext())
-            {
-                db.Database.CreateIfNotExists();
-                return db.MovieHall.ToList();
-            }
+            return bll.Show();
         }
         /// <summary>
         /// 根据Id返填
@@ -63,9 +52,7 @@ namespace DAL
         /// <returns></returns>
         public MovieHall ShowById(int Id)
         {
-            using (MyDbContext db=new MyDbContext()) {
-                return db.MovieHall.Find(Id);
-            }
+            return bll.ShowById(Id);
         }
         /// <summary>
         /// 修改影厅信息
@@ -74,10 +61,7 @@ namespace DAL
         /// <returns></returns>
         public int Upd(MovieHall t)
         {
-            using (MyDbContext db=new MyDbContext()) {
-                db.Entry(t).State = System.Data.Entity.EntityState.Modified;
-                return db.SaveChanges();
-            }
+            return bll.Upd(t);
         }
     }
 }
