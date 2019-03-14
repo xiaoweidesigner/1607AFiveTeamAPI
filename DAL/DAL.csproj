@@ -47,9 +47,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commentdal.cs" />
+    <Compile Include="ActivityDAL.cs" />
+    <Compile Include="CommentDAL.cs" />
+    <Compile Include="CustomDAL.cs" />
+    <Compile Include="DepartMentDAL.cs" />
+    <Compile Include="EmployeeDAL.cs" />
+    <Compile Include="FinanceDAL.cs" />
+    <Compile Include="MovieDAL.cs" />
+    <Compile Include="MovieHallDAL.cs" />
     <Compile Include="MyDbContext.cs" />
+    <Compile Include="OrderDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeatDAL.cs" />
+    <Compile Include="SessionSDAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
