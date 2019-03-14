@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataService;
+using DAL;
 using MODEL;
+using DataService;
 
-namespace DAL
+namespace BLL
 {
-    public class SessionSDAL : ICommon<SessionS>
+   public  class SessionSBLL
     {
-        private static ICommon<SessionS> dal;
-        public SessionSDAL()
+        private static ICommon<SessionS> bll;
+        public SessionSBLL()
         {
-            if (dal == null)
+            if (bll == null)
             {
-                dal = new SessionSDAL();
+                bll = new SessionSBLL() as ICommon<SessionS>;
             }
         }
         /// <summary>
@@ -25,10 +26,7 @@ namespace DAL
         /// <returns></returns>
         public int Add(SessionS t)
         {
-            using (MyDbContext db=new MyDbContext()) {
-                db.SessionS.Add(t);
-                return db.SaveChanges();
-            }
+            return bll.Add(t);
         }
         /// <summary>
         /// 根据Id删除场次
@@ -37,12 +35,7 @@ namespace DAL
         /// <returns></returns>
         public int Del(int Id)
         {
-            using (MyDbContext db = new MyDbContext())
-            {
-                var s = db.SessionS.Find(Id);
-                db.SessionS.Remove(s);
-                return db.SaveChanges();
-            }
+            return bll.Del(Id);
         }
         /// <summary>
         /// 显示场次信息
@@ -50,10 +43,7 @@ namespace DAL
         /// <returns></returns>
         public List<SessionS> Show()
         {
-            using (MyDbContext db = new MyDbContext())
-            {
-                return db.SessionS.Include("Movie").Include("MovieHall").ToList();
-            }
+            return bll.Show();
         }
         /// <summary>
         /// 根据Id查询场次
@@ -62,10 +52,7 @@ namespace DAL
         /// <returns></returns>
         public SessionS ShowById(int Id)
         {
-            using (MyDbContext db = new MyDbContext())
-            {
-                return db.SessionS.Include("Movie").Include("MovieHall").Where(s=>s.SId==Id).FirstOrDefault();
-            }
+            return bll.ShowById(Id);
         }
         /// <summary>
         /// 修改场次信息
@@ -74,11 +61,7 @@ namespace DAL
         /// <returns></returns>
         public int Upd(SessionS t)
         {
-            using (MyDbContext db = new MyDbContext())
-            {
-                db.Entry(t).State = System.Data.Entity.EntityState.Modified;
-                return db.SaveChanges();
-            }
+            return bll.Upd(t);
         }
     }
 }
