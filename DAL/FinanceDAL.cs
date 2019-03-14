@@ -11,15 +11,18 @@ namespace DAL
     public class FinanceDAL : ICommon<Finance>
     {
         private static FinanceDAL dal = null;
-        public static FinanceDAL DepartMent()
+        private FinanceDAL()
         {
             if (dal == null)
             {
                 dal = new FinanceDAL();
             }
-            return DepartMent();
         }
-
+        /// <summary>
+        /// 添加财务
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public int Add(Finance t)
         {
             using (MyDbContext my = new MyDbContext())
@@ -28,7 +31,11 @@ namespace DAL
                 return my.SaveChanges();
             }
         }
-
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public int Del(int Id)
         {
             using (MyDbContext my = new MyDbContext())
@@ -38,23 +45,41 @@ namespace DAL
                 return my.SaveChanges();
             }
         }
-
+        /// <summary>
+        /// 显示
+        /// </summary>
+        /// <returns></returns>
         public List<Finance> Show()
         {
             using (MyDbContext my = new MyDbContext())
             {
-                return my.Finance.ToList();
+                return my.Finance.Include("Finance").ToList();
             }
         }
-
+        /// <summary>
+        /// 反填
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public Finance ShowById(int Id)
         {
-            throw new NotImplementedException();
+            using (MyDbContext db = new MyDbContext())
+            {
+                return db.Finance.Include("Finance").Where(s => s.FId == Id).FirstOrDefault();
+            }
         }
-
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public int Upd(Finance t)
         {
-            throw new NotImplementedException();
+            using (MyDbContext my = new MyDbContext())
+            {
+                my.Entry(t).State = System.Data.Entity.EntityState.Modified;
+                return my.SaveChanges();
+            }
         }
     }
 }
