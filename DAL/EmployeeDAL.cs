@@ -88,5 +88,19 @@ namespace DAL
                 return my.SaveChanges();
             }
         }
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="E_Account"></param>
+        /// <param name="E_Pwd"></param>
+        /// <returns></returns>
+        public Employee Login(string E_Account, string E_Pwd)
+        {
+            using (MyDbContext db=new MyDbContext())
+            {
+                Employee e= db.Database.SqlQuery<Employee>($"select * from Employees where E_Account='{E_Account}' and E_Pwd='{E_Pwd}'").FirstOrDefault();
+                return e;
+            }
+        }
     }
 }
