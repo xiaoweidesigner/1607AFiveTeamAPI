@@ -10,13 +10,18 @@ namespace DAL
 {
     public class SessionSDAL : ICommon<SessionS>
     {
-        private static ICommon<SessionS> dal;
+        private static SessionSDAL dal;
         public SessionSDAL()
+        {
+
+        }
+        public static SessionSDAL CreateSessionSDAL()
         {
             if (dal == null)
             {
                 dal = new SessionSDAL();
             }
+            return dal;
         }
         /// <summary>
         /// 添加场次信息

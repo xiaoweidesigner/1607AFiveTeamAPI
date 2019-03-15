@@ -11,53 +11,55 @@ namespace RecallOnTime.Controllers
 {
     public class LmqController : ApiController
     {
-        MovieBLL movieBLL = new MovieBLL();//电影
-        SessionSBLL sessionSBLL = new SessionSBLL();//场次
-        MovieHallBLL hallBLL = new MovieHallBLL();//影厅
         #region  电影
         /// <summary>
         /// 添加
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
+        [HttpPost]
         public int AddMovie(Movie t)
         {
-            return movieBLL.Add(t);
+            return MovieBLL.CreateMovieBLL().Add(t);
         }
         /// <summary>
         /// 根据id删除影片
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
+        [HttpDelete]
         public int DelMovie(int Id)
         {
-            return movieBLL.Del(Id);
+            return MovieBLL.CreateMovieBLL().Del(Id);
         }
         /// <summary>
         /// 显示影片信息
         /// </summary>
         /// <returns></returns>
+        [HttpGet]
         public List<Movie> ShowMovie()
         {
-            return movieBLL.Show();
+            return MovieBLL.CreateMovieBLL().Show();
         }
         /// <summary>
         /// 根据Id查询影片
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
+        [HttpGet]
         public Movie ShowByIdMovie(int Id)
         {
-            return movieBLL.ShowById(Id);
+            return MovieBLL.CreateMovieBLL().ShowById(Id);
         }
         /// <summary>
         /// 修改影片信息
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
+        [HttpPut]
         public int UpdMovie(Movie t)
         {
-            return movieBLL.Upd(t);
+            return MovieBLL.CreateMovieBLL().Upd(t);
         }
         #endregion
 
@@ -67,44 +69,49 @@ namespace RecallOnTime.Controllers
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
+        [HttpPost]
         public int AddSessionS(SessionS t)
         {
-            return sessionSBLL.Add(t);
+            return SessionSBLL.CreateSessionSBLL().Add(t);
         }
         /// <summary>
         /// 根据Id删除场次
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
+        [HttpDelete]
         public int DelSessionS(int Id)
         {
-            return sessionSBLL.Del(Id);
+            return SessionSBLL.CreateSessionSBLL().Del(Id);
         }
         /// <summary>
         /// 显示场次信息
         /// </summary>
         /// <returns></returns>
+        [HttpGet]
         public List<SessionS> ShowSessionS()
         {
-            return sessionSBLL.Show();
+            return SessionSBLL.CreateSessionSBLL().Show();
         }
         /// <summary>
         /// 根据Id查询场次
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
+        [HttpGet]
         public SessionS ShowByIdSessionS(int Id)
         {
-            return sessionSBLL.ShowById(Id);
+            return SessionSBLL.CreateSessionSBLL().ShowById(Id);
         }
         /// <summary>
         /// 修改场次信息
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
+        [HttpPut]
         public int UpdSessionS(SessionS t)
         {
-            return sessionSBLL.Upd(t);
+            return SessionSBLL.CreateSessionSBLL().Upd(t);
         }
         #endregion
 
@@ -114,44 +121,49 @@ namespace RecallOnTime.Controllers
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
+        [HttpPost]
         public int AddMovieHall(MovieHall t)
         {
-            return hallBLL.Add(t);
+            return MovieHallBLL.CreateMovieHallBLL().Add(t);
         }
         /// <summary>
         /// 根据id删除影厅
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
+        [HttpDelete]
         public int DelMovieHall(int Id)
         {
-            return hallBLL.Del(Id);
+            return MovieHallBLL.CreateMovieHallBLL().Del(Id);
         }
         /// <summary>
         /// 显示影厅信息
         /// </summary>
         /// <returns></returns>
+        [HttpGet]
         public List<MovieHall> ShowMovieHall()
         {
-            return hallBLL.Show();
+            return MovieHallBLL.CreateMovieHallBLL().Show();
         }
         /// <summary>
         /// 根据Id返填
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
+        [HttpGet]
         public MovieHall ShowByIdMovieHall(int Id)
         {
-            return hallBLL.ShowById(Id);
+            return MovieHallBLL.CreateMovieHallBLL().ShowById(Id);
         }
         /// <summary>
         /// 修改影厅信息
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
+        [HttpPut]
         public int UpdMovieHall(MovieHall t)
         {
-            return hallBLL.Upd(t);
+            return MovieHallBLL.CreateMovieHallBLL().Upd(t);
         }
         #endregion
     }
