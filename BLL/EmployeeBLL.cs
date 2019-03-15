@@ -47,5 +47,10 @@ namespace BLL
         {
             return EmployeeDAL.CreatEmployeeDAL().Upd(t);
         }
+        //登录
+        public Employee Login(string E_Account, string E_Pwd)
+        {
+            return EmployeeDAL.CreatEmployeeDAL().Login(E_Account, E_Pwd);
+        }
     }
 }
