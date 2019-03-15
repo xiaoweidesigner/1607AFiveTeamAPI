@@ -9,39 +9,43 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
-    public class FinanceBLL
+    public class FinanceBLL:ICommon<Finance>
     {
-        private static ICommon<Finance> bll;
-        public FinanceBLL()
+        private static FinanceBLL bll = null;
+        private FinanceBLL()
+        {
+        }
+        public static FinanceBLL CreateFinanceBLL()
         {
             if (bll == null)
             {
-                bll = new FinanceBLL() as ICommon<Finance>;
+                bll = new FinanceBLL();
             }
+            return bll;
         }
         public int Add(Finance t)
         {
-            return bll.Add(t);
+            return FinanceDAL.CreatFinanceDAL().Add(t);
         }
 
         public int Del(int Id)
         {
-            return bll.Del(Id);
+            return FinanceDAL.CreatFinanceDAL().Del(Id);
         }
 
         public List<Finance> Show()
         {
-            return bll.Show();
+            return FinanceDAL.CreatFinanceDAL().Show();
         }
 
         public Finance ShowById(int Id)
         {
-            return bll.ShowById(Id);
+            return FinanceDAL.CreatFinanceDAL().ShowById(Id);
         }
 
         public int Upd(Finance t)
         {
-            return bll.Upd(t);
+            return FinanceDAL.CreatFinanceDAL().Upd(t);
         }
     }
 }

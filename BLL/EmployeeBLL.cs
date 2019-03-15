@@ -9,39 +9,43 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
-    public class EmployeeBLL
+    public class EmployeeBLL:ICommon<Employee>
     {
-        private static ICommon<Employee> bll;
-        public EmployeeBLL()
+        private static EmployeeBLL bll = null;
+        private EmployeeBLL()
+        {
+        }
+        public static EmployeeBLL CreateEmployeeBLL()
         {
             if (bll == null)
             {
-                bll = new EmployeeBLL() as ICommon<Employee>;
+                bll = new EmployeeBLL();
             }
+            return bll;
         }
         public int Add(Employee t)
         {
-            return bll.Add(t);
+            return EmployeeDAL.CreatEmployeeDAL().Add(t);
         }
 
         public int Del(int Id)
         {
-            return bll.Del(Id);
+            return EmployeeDAL.CreatEmployeeDAL().Del(Id);
         }
 
         public List<Employee> Show()
         {
-            return bll.Show();
+            return EmployeeDAL.CreatEmployeeDAL().Show();
         }
 
         public Employee ShowById(int Id)
         {
-            return bll.ShowById(Id);
+            return EmployeeDAL.CreatEmployeeDAL().ShowById(Id);
         }
 
         public int Upd(Employee t)
         {
-            return bll.Upd(t);
+            return EmployeeDAL.CreatEmployeeDAL().Upd(t);
         }
     }
 }

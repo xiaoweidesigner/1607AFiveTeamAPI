@@ -11,12 +11,17 @@ namespace DAL
     public class FinanceDAL : ICommon<Finance>
     {
         private static FinanceDAL dal = null;
-        private FinanceDAL()
+        public FinanceDAL()
+        {
+
+        }
+        public static FinanceDAL CreatFinanceDAL()
         {
             if (dal == null)
             {
                 dal = new FinanceDAL();
             }
+            return dal;
         }
         /// <summary>
         /// 添加财务

@@ -12,10 +12,15 @@ namespace DAL
         private static DepartMentDAL dal = null;
         public DepartMentDAL()
         {
+          
+        }
+        public static DepartMentDAL CreatDepartMentDal()
+        {
             if (dal == null)
             {
                 dal = new DepartMentDAL();
             }
+            return dal;
         }
         /// <summary>
         /// 添加部门

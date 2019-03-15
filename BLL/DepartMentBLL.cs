@@ -9,30 +9,34 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
-    public class DepartMentBLL 
+    public class DepartMentBLL :ICommon<DepartMent>
     {
-
-        private static ICommon<DepartMent> bll;
-        public DepartMentBLL()
+        private static DepartMentBLL bll = null;
+        private DepartMentBLL()
+        {
+        }
+        public static DepartMentBLL CreateDepartMentBLL()
         {
             if (bll == null)
             {
-                bll = new DepartMentBLL() as ICommon<DepartMent>;
+                bll = new DepartMentBLL();
             }
+            return bll;
         }
+
         public int Add(DepartMent t)
         {
-            return bll.Add(t);
+            return DepartMentDAL.CreatDepartMentDal().Add(t);
         }
 
         public int Del(int Id)
         {
-            return bll.Del(Id);
+            return DepartMentDAL.CreatDepartMentDal().Del(Id);
         }
 
         public List<DepartMent> Show()
         {
-            return bll.Show();
+            return DepartMentDAL.CreatDepartMentDal().Show();
         }
 
         public DepartMent ShowById(int Id)

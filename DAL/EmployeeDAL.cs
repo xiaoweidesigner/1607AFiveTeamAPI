@@ -12,12 +12,17 @@ namespace DAL
     {
         #region 单例
         private static EmployeeDAL dal = null;
-        private EmployeeDAL()
+        public EmployeeDAL()
+        {
+
+        }
+        public static EmployeeDAL CreatEmployeeDAL()
         {
             if (dal == null)
             {
                 dal = new EmployeeDAL();
             }
+            return dal;
         }
         #endregion
         /// <summary>
