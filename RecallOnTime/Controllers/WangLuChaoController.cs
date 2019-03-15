@@ -26,7 +26,7 @@ namespace RecallOnTime.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<DepartMent> ShowCustom()
+        public List<DepartMent> ShowDepartMent()
         {
             return DepartMentBLL.CreateDepartMentBLL().Show();
         }
