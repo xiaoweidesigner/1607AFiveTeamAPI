@@ -51,5 +51,10 @@ namespace BLL
         {
             return CustomDAL.CreateCustomDal().Upd(t);
         }
+        //充值
+        public int CZ(float C_integral, int CId)
+        {
+            return CustomDAL.CreateCustomDal().CZ(C_integral, CId);
+        }
     }
 }

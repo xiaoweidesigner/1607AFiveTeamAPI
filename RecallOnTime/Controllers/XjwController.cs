@@ -11,7 +11,7 @@ namespace RecallOnTime.Controllers
 {
     public class XjwController : ApiController
     {
-        #region 顾客的CRUD 及操作
+        #region 顾客的CRUD 及操作  充值
         [HttpPost]
         public int AddCustom(Custom custom)
         {
@@ -36,6 +36,12 @@ namespace RecallOnTime.Controllers
         public int UpdCustom(Custom custom)
         {
             return CustomBLL.CreateCustomBll().Upd(custom);
+        }
+        //充值
+        [HttpGet]
+        public int CZ(float C_integral, int CId)
+        {
+            return CustomBLL.CreateCustomBll().CZ(C_integral, CId);
         }
         #endregion
 
@@ -65,5 +71,6 @@ namespace RecallOnTime.Controllers
             return CommentBLL.CreateCommentBll().Upd(comment);
         }
         #endregion
+        
     }
 }

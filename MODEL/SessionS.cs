@@ -19,7 +19,7 @@ namespace MODEL
         public int MovieHallId { get; set; }//放映厅外键
         public DateTime S_BeginTime { get; set; }//开始时间
 
-
+        public DateTime S_EndTime { get; set; }
         public Movie Movie { get; set; }
         public MovieHall MovieHall { get; set; }
     }

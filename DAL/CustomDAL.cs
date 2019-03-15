@@ -91,5 +91,16 @@ namespace DAL
                 return db.SaveChanges();
             }
         }
+        //充值  加积分
+        public int CZ(float C_integral,int CId)
+        {
+            using (MyDbContext db=new MyDbContext())
+            {
+                int result = Convert.ToInt32(C_integral / 10);
+                db.Database.SqlQuery<int>($"update Customs set C_integral=C_integral+{C_integral},C_EndTime=C_EndTime+{result} Where CId={CId}");
+                int resultback= db.SaveChanges();
+                return resultback;
+            }
+        }
     }
 }
