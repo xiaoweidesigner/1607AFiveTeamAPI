@@ -56,5 +56,10 @@ namespace BLL
         {
             return CustomDAL.CreateCustomDal().CZ(C_integral, CId);
         }
+        //加入会员   将状态改为1,将个人资料完善   普通游客添加时名称一律使用游客  以手机号进行标识
+        public int JoinHY(int CId, int C_Name,string Img)
+        {
+            return CustomDAL.CreateCustomDal().JoinHY(CId, C_Name,Img);
+        }
     }
 }

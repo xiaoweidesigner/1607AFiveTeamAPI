@@ -97,9 +97,16 @@ namespace DAL
             using (MyDbContext db=new MyDbContext())
             {
                 int result = Convert.ToInt32(C_integral / 10);
-                db.Database.SqlQuery<int>($"update Customs set C_integral=C_integral+{C_integral},C_EndTime=C_EndTime+{result} Where CId={CId}");
-                int resultback= db.SaveChanges();
-                return resultback;
+                return db.Database.ExecuteSqlCommand($"update Customs set C_integral=C_integral+{C_integral},C_EndTime=C_EndTime+{result} Where CId={CId}");;
+            }
+        }
+        //加入会员   将状态改为1,将个人资料完善   普通游客添加时名称一律使用游客  以手机号进行标识
+        public int JoinHY(int CId,int C_Name,string Img)
+        {
+            using (MyDbContext db=new MyDbContext())
+            {
+                int result= db.Database.ExecuteSqlCommand($"update Customs set C_Name='{C_Name}',C_Phote='{Img}' where CId={CId}");
+                return result;
             }
         }
     }

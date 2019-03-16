@@ -43,6 +43,12 @@ namespace RecallOnTime.Controllers
         {
             return CustomBLL.CreateCustomBll().CZ(C_integral, CId);
         }
+        [HttpGet]
+        //加入会员   将状态改为1,将个人资料完善   普通游客添加时名称一律使用游客  以手机号进行标识
+        public int JoinHY(int CId,int C_Name,string Img)
+        {
+            return CustomBLL.CreateCustomBll().JoinHY(CId,C_Name,Img);
+        }
         #endregion
 
         #region 评论的CRUD 及操作
