@@ -98,6 +98,7 @@ namespace DAL
         {
             using (MyDbContext db=new MyDbContext())
             {
+                db.Database.CreateIfNotExists();
                 Employee e= db.Database.SqlQuery<Employee>($"select * from Employees where E_Account='{E_Account}' and E_Pwd='{E_Pwd}'").FirstOrDefault();
                 return e;
             }
