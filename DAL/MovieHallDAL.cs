@@ -11,12 +11,18 @@ namespace DAL
     
     public class MovieHallDAL : ICommon<MovieHall>
     {
-        private static ICommon<MovieHall> dal;
-        public MovieHallDAL() {
+        private static MovieHallDAL dal;
+        public MovieHallDAL()
+        {
+
+        }
+        public static MovieHallDAL CreateMovieHallDAL()
+        {
             if (dal == null)
             {
                 dal = new MovieHallDAL();
             }
+            return dal;
         }
         /// <summary>
         /// 添加影厅信息

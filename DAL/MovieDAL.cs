@@ -10,12 +10,18 @@ namespace DAL
 {
     public class MovieDAL : ICommon<Movie>
     {
-        private static ICommon<Movie> dal;
-        public MovieDAL() {
+        private static MovieDAL dal;
+        public MovieDAL()
+        {
+
+        }
+        public static MovieDAL CreateMovieDAL()
+        {
             if (dal == null)
             {
                 dal = new MovieDAL();
             }
+            return dal;
         }
         /// <summary>
         /// 添加影片信息

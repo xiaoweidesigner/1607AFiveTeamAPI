@@ -11,13 +11,17 @@ namespace BLL
 {
    public  class SessionSBLL
     {
-        private static ICommon<SessionS> bll;
-        public SessionSBLL()
+        private static SessionSBLL bll = null;
+        private SessionSBLL()
+        {
+        }
+        public static SessionSBLL CreateSessionSBLL()
         {
             if (bll == null)
             {
-                bll = new SessionSBLL() as ICommon<SessionS>;
+                bll = new SessionSBLL();
             }
+            return bll;
         }
         /// <summary>
         /// 添加场次信息
@@ -26,7 +30,7 @@ namespace BLL
         /// <returns></returns>
         public int Add(SessionS t)
         {
-            return bll.Add(t);
+            return SessionSDAL.CreateSessionSDAL().Add(t);
         }
         /// <summary>
         /// 根据Id删除场次
@@ -35,7 +39,7 @@ namespace BLL
         /// <returns></returns>
         public int Del(int Id)
         {
-            return bll.Del(Id);
+            return SessionSDAL.CreateSessionSDAL().Del(Id);
         }
         /// <summary>
         /// 显示场次信息
@@ -43,7 +47,7 @@ namespace BLL
         /// <returns></returns>
         public List<SessionS> Show()
         {
-            return bll.Show();
+            return SessionSDAL.CreateSessionSDAL().Show();
         }
         /// <summary>
         /// 根据Id查询场次
@@ -52,7 +56,7 @@ namespace BLL
         /// <returns></returns>
         public SessionS ShowById(int Id)
         {
-            return bll.ShowById(Id);
+            return SessionSDAL.CreateSessionSDAL().ShowById(Id);
         }
         /// <summary>
         /// 修改场次信息
@@ -61,7 +65,7 @@ namespace BLL
         /// <returns></returns>
         public int Upd(SessionS t)
         {
-            return bll.Upd(t);
+            return SessionSDAL.CreateSessionSDAL().Upd(t);
         }
     }
 }
