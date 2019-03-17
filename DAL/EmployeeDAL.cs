@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace DAL
 {
@@ -101,6 +103,48 @@ namespace DAL
                 db.Database.CreateIfNotExists();
                 Employee e= db.Database.SqlQuery<Employee>($"select * from Employees where E_Account='{E_Account}' and E_Pwd='{E_Pwd}'").FirstOrDefault();
                 return e;
+            }
+        }
+        /// <summary>
+        /// 改变员工当前状态为工作中  改变放映厅当前状态为打扫中
+        /// </summary>
+        /// <returns></returns>
+        public int UpdEmployeeStatus(int EId,int HId,out int Code)
+        {
+            using (MyDbContext db=new MyDbContext())
+            {
+                SqlParameter PEId = new SqlParameter("@EId", SqlDbType.Int);
+                PEId.Value = EId;
+                SqlParameter PHId = new SqlParameter("@HId", SqlDbType.Int);
+                PHId.Value = HId;
+                SqlParameter PCode = new SqlParameter("@Code", SqlDbType.Int);
+                PCode.Direction = ParameterDirection.Output;
+                SqlParameter[] para = new SqlParameter[] { PEId, PHId, PCode };
+                string sql = $"exec dbo.p_ChangeEMStatusAndMHStatus2 @EId,@HId @Code output";
+                db.Database.ExecuteSqlCommand(sql, para);
+                Code = Convert.ToInt32(PCode.Value);
+                return Code;
+            }
+        }
+        /// <summary>
+        /// 改变员工当前状态为空闲中  改变放映厅当前状态为空闲中
+        /// </summary>
+        /// <returns></returns>
+        public int UpdEmployeeStatus2(int EId, int HId, out int Code)
+        {
+            using (MyDbContext db = new MyDbContext())
+            {
+                SqlParameter PEId = new SqlParameter("@EId", SqlDbType.Int);
+                PEId.Value = EId;
+                SqlParameter PHId = new SqlParameter("@HId", SqlDbType.Int);
+                PHId.Value = HId;
+                SqlParameter PCode = new SqlParameter("@Code", SqlDbType.Int);
+                PCode.Direction = ParameterDirection.Output;
+                SqlParameter[] para = new SqlParameter[] { PEId, PHId, PCode };
+                string sql = $"exec dbo.p_ChangeEMStatusAndMHStatus1 @EId,@HId @Code output";
+                db.Database.ExecuteSqlCommand(sql, para);
+                Code = Convert.ToInt32(PCode.Value);
+                return Code;
             }
         }
     }

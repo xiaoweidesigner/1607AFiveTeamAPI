@@ -52,5 +52,21 @@ namespace BLL
         {
             return EmployeeDAL.CreatEmployeeDAL().Login(E_Account, E_Pwd);
         }
+        /// <summary>
+        /// 改变员工当前状态为工作中  放映厅为打扫中
+        /// </summary>
+        /// <returns></returns>
+        public int UpdEmployeeStatus(int EId,int HId,out int Code)
+        {
+            return EmployeeDAL.CreatEmployeeDAL().UpdEmployeeStatus(EId,HId,out Code);
+        }
+        /// <summary>
+        /// 改变员工当前状态为空闲中  改变放映厅当前状态为空闲中
+        /// </summary>
+        /// <returns></returns>
+        public int UpdEmployeeStatus2(int EId, int HId, out int Code)
+        {
+            return EmployeeDAL.CreatEmployeeDAL().UpdEmployeeStatus2(EId, HId, out Code);
+        }
     }
 }

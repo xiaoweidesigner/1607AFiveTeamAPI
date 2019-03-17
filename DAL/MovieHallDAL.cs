@@ -85,5 +85,16 @@ namespace DAL
                 return db.SaveChanges();
             }
         }
+        /// <summary>
+        /// 打扫卫生能看到的该打扫的影厅信息
+        /// </summary>
+        /// <returns></returns>
+        public List<MovieHall> SH()
+        {
+            using (MyDbContext db=new MyDbContext())
+            {
+                return db.Database.SqlQuery<MovieHall>($"select * from MovieHalls where H_State in (3,4)").ToList();
+            }
+        }
     }
 }

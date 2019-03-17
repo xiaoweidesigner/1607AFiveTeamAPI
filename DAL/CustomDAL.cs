@@ -101,11 +101,11 @@ namespace DAL
             }
         }
         //加入会员   将状态改为1,将个人资料完善   普通游客添加时名称一律使用游客  以手机号进行标识
-        public int JoinHY(int CId,int C_Name,string Img)
+        public int JoinHY(int CId,string C_Name,string Img)
         {
             using (MyDbContext db=new MyDbContext())
             {
-                int result= db.Database.ExecuteSqlCommand($"update Customs set C_Name='{C_Name}',C_Phote='{Img}' where CId={CId}");
+                int result= db.Database.ExecuteSqlCommand($"update Customs set C_Name='{C_Name}',C_Phote='{Img}',C_State=1 where CId={CId}");
                 return result;
             }
         }
