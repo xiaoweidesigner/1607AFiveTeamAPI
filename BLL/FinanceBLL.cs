@@ -47,5 +47,9 @@ namespace BLL
         {
             return FinanceDAL.CreatFinanceDAL().Upd(t);
         }
+        public List<Finance> ShowFinance()
+        {
+            return FinanceDAL.CreatFinanceDAL().ShowFinance();
+        }
     }
 }

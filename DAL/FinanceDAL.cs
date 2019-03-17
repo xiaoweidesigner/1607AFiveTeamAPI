@@ -86,5 +86,16 @@ namespace DAL
                 return my.SaveChanges();
             }
         }
+        /// <summary>
+        ///查询金额 
+        /// </summary>
+        /// <returns></returns>
+        public List<Finance> ShowFinance()
+        {
+            using (MyDbContext my = new MyDbContext())
+            {
+                return my.Database.SqlQuery<Finance>($"select * from Finances").ToList();
+            }
+        }
     }
 }
