@@ -67,5 +67,13 @@ namespace BLL
         {
             return MovieHallDAL.CreateMovieHallDAL().Upd(t);
         }
+        /// <summary>
+        /// 打扫卫生能看到的该打扫的影厅信息
+        /// </summary>
+        /// <returns></returns>
+        public List<MovieHall> SH()
+        {
+            return MovieHallDAL.CreateMovieHallDAL().SH();
+        }
     }
 }

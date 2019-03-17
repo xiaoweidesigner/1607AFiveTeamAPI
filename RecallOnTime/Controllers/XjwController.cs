@@ -11,7 +11,7 @@ namespace RecallOnTime.Controllers
 {
     public class XjwController : ApiController
     {
-        #region 顾客的CRUD 及操作  充值
+        #region 顾客的CRUD 充值操作  加入会员操作   
         [HttpPost]
         public int AddCustom(Custom custom)
         {
@@ -42,6 +42,46 @@ namespace RecallOnTime.Controllers
         public int CZ(float C_integral, int CId)
         {
             return CustomBLL.CreateCustomBll().CZ(C_integral, CId);
+        }
+
+
+        [HttpGet]
+        //加入会员   将状态改为1,将个人资料完善   普通游客添加时名称一律使用游客  以手机号进行标识
+        public int Join(int CId,string C_Name,string Img)
+        {
+            return CustomBLL.CreateCustomBll().JoinHY(CId,C_Name,Img);
+        }
+        #endregion
+
+        #region 卫生部的人看到的该打扫的放映厅
+        /// <summary>
+        /// 打扫卫生能看到的该打扫的影厅信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<MovieHall> SH()
+        {
+            return MovieHallBLL.CreateMovieHallBLL().SH();
+        }
+        /// <summary>
+        /// 改变员工当前状态为工作中  放映厅为打扫中
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public int UpdEmployeeStatus(int EId, int HId)
+        {
+            int Code;
+            return EmployeeBLL.CreateEmployeeBLL().UpdEmployeeStatus(EId, HId, out Code);
+        }
+        /// <summary>
+        /// 改变员工当前状态为空闲中  改变放映厅当前状态为空闲中
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public int UpdEmployeeStatus2(int EId, int HId)
+        {
+            int Code;
+            return EmployeeBLL.CreateEmployeeBLL().UpdEmployeeStatus2(EId, HId, out Code);
         }
         #endregion
 
