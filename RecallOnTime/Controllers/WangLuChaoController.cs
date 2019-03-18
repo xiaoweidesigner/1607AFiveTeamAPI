@@ -49,12 +49,50 @@ namespace RecallOnTime.Controllers
         {
             return EmployeeBLL.CreateEmployeeBLL().Show();
         }
+        [HttpGet]
+        public Employee ShowEmployeeId(int Id)
+        {
+            return EmployeeBLL.CreateEmployeeBLL().ShowById(Id);
+        }
+        [HttpPost]
+        public int UpdEmployee(Employee de)
+        {
+            return EmployeeBLL.CreateEmployeeBLL().Upd(de);
+        }
+        /// <summary>
+        /// 显示评论信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<Comment> ShowComments()
+        {
+            return CommentBLL.CreateCommentBll().Show();
+        }
+        /// <summary>
+        /// 删除评论信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public int DelComments(int Id)
+        {
+            return CommentBLL.CreateCommentBll().Del(Id);
+        }
 
         //员工/管理员登录
         [HttpGet]
         public Employee Login(string E_Account, string E_Pwd)
         {
             return EmployeeBLL.CreateEmployeeBLL().Login(E_Account, E_Pwd);
+        }
+        /// <summary>
+        /// 显示金额
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<Finance> ShowFinances()
+        {
+            return FinanceBLL.CreateFinanceBLL().ShowFinance();
         }
     }
 }

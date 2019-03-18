@@ -69,5 +69,9 @@ namespace BLL
 
             return financeDAL.ShowTuBiaoRi(year, month, day);
         }
+        public List<Finance> ShowFinance()
+        {
+            return FinanceDAL.CreatFinanceDAL().ShowFinance();
+        }
     }
 }
