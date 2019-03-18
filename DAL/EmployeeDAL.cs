@@ -62,7 +62,7 @@ namespace DAL
         {
             using (MyDbContext my = new MyDbContext())
             {
-                return my.Employee.Include("Employee").ToList();
+                return my.Employee.Include("DepartMent").ToList();
             }
         }
         /// <summary>
@@ -74,7 +74,7 @@ namespace DAL
         {
             using (MyDbContext my = new MyDbContext())
             {
-                return my.Employee.Include("Employee").Where(s => s.EId == Id).FirstOrDefault();
+                return my.Employee.Include("DepartMent").Where(s => s.EId == Id).FirstOrDefault();
             }
         }
         /// <summary>
