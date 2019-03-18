@@ -50,6 +50,7 @@
     <Compile Include="ActivityDAL.cs" />
     <Compile Include="CommentDAL.cs" />
     <Compile Include="CustomDAL.cs" />
+    <Compile Include="DBHelper.cs" />
     <Compile Include="DepartMentDAL.cs" />
     <Compile Include="EmployeeDAL.cs" />
     <Compile Include="FinanceDAL.cs" />

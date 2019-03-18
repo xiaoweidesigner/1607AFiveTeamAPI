@@ -1,16 +1,17 @@
-﻿using DataService;
+﻿using DAL;
+using DataService;
 using MODEL;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL
+namespace BLL
 {
-    public class SeatDAL : ICommon<Seat>
+    public class SeatBLL
     {
+        SeatDAL dal = new SeatDAL();
         /// <summary>
         /// 添加座位
         /// </summary>
@@ -18,13 +19,7 @@ namespace DAL
         /// <returns></returns>
         public int Add(Seat t)
         {
-            using (MyDbContext db = new MyDbContext())
-            {
-                
-                db.Database.CreateIfNotExists();
-                db.Seat.Add(t);
-                return db.SaveChanges();
-            }
+            return dal.Add(t);
         }
         /// <summary>
         /// 根据ID删除座位
@@ -33,12 +28,8 @@ namespace DAL
         /// <returns></returns>
         public int Del(int Id)
         {
-            using (MyDbContext db = new MyDbContext())
-            {
-                var seat = db.Seat.Find(Id);
-                db.Seat.Remove(seat);
-                return db.SaveChanges();
-            }
+            return dal.Del(Id);
+
         }
         /// <summary>
         /// 查询座位
@@ -46,11 +37,8 @@ namespace DAL
         /// <returns></returns>
         public List<Seat> Show()
         {
-            using (MyDbContext db = new MyDbContext())
-            {
+            return dal.Show();
 
-                return db.Seat.Include("MovieHall").ToList();
-            }
         }
         /// <summary>
         /// 根据ID座位
@@ -59,11 +47,8 @@ namespace DAL
         /// <returns></returns>
         public Seat ShowById(int Id)
         {
-            using (MyDbContext db = new MyDbContext())
-            {
+            return dal.ShowById(Id);
 
-                return db.Seat.Include("MovieHall").ToList().FirstOrDefault(m => m.SeId == Id);
-            }
         }
         /// <summary>
         /// 修改订单
@@ -72,14 +57,10 @@ namespace DAL
         /// <returns></returns>
         public int Upd(Seat t)
         {
-            using (MyDbContext db = new MyDbContext())
-            {
-                db.Seat.Attach(t);
-                db.Entry(t).State = EntityState.Modified;
-                return db.SaveChanges();
-            }
+            return dal.Upd(t);
+
         }
 
-       
+
     }
 }
