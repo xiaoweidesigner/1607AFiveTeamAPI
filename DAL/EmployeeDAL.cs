@@ -120,7 +120,7 @@ namespace DAL
                 SqlParameter PCode = new SqlParameter("@Code", SqlDbType.Int);
                 PCode.Direction = ParameterDirection.Output;
                 SqlParameter[] para = new SqlParameter[] { PEId, PHId, PCode };
-                string sql = $"exec dbo.p_ChangeEMStatusAndMHStatus2 @EId,@HId @Code output";
+                string sql = $"exec dbo.p_ChangeEMStatusAndMHStatus2 @EId,@HId,@Code output";
                 db.Database.ExecuteSqlCommand(sql, para);
                 Code = Convert.ToInt32(PCode.Value);
                 return Code;
@@ -141,7 +141,7 @@ namespace DAL
                 SqlParameter PCode = new SqlParameter("@Code", SqlDbType.Int);
                 PCode.Direction = ParameterDirection.Output;
                 SqlParameter[] para = new SqlParameter[] { PEId, PHId, PCode };
-                string sql = $"exec dbo.p_ChangeEMStatusAndMHStatus1 @EId,@HId @Code output";
+                string sql = $"exec dbo.p_ChangeEMStatusAndMHStatus1 @EId,@HId,@Code output";
                 db.Database.ExecuteSqlCommand(sql, para);
                 Code = Convert.ToInt32(PCode.Value);
                 return Code;
