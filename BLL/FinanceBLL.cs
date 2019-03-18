@@ -3,6 +3,7 @@ using DataService;
 using MODEL;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,6 +47,27 @@ namespace BLL
         public int Upd(Finance t)
         {
             return FinanceDAL.CreatFinanceDAL().Upd(t);
+        }
+
+
+        FinanceDAL financeDAL = new FinanceDAL();
+        /// <summary>
+        /// 根据年月日查询财务
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ShowCaiwuRi(int year, int month, int day, int state)
+        {
+
+            return financeDAL.ShowCaiwuRi(year, month, day, state);
+        }
+        /// <summary>
+        /// 根据年月日查询图表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ShowTuBiaoRi(int year, int month, int day)
+        {
+
+            return financeDAL.ShowTuBiaoRi(year, month, day);
         }
         public List<Finance> ShowFinance()
         {

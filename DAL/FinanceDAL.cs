@@ -2,6 +2,7 @@
 using MODEL;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,6 +87,35 @@ namespace DAL
                 return my.SaveChanges();
             }
         }
+
+
+        /// <summary>
+        /// 根据年月日查询财务
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ShowCaiwuRi(int year, int month, int day, int state)
+        {
+            string sql = @"select sum(O_Money) qian,count(*) shu from Orders join SessionS on SessionS.SId=SessionSId where SessionSId in (select SId from SessionS where DATEPART(YYYY,S_BeginTime)=" + year + " and DATEPART(MM, S_BeginTime)= " + month + " and DATEPART(DAY, S_BeginTime)= " + day + ")  ";
+            if (state == 1)
+            {
+                sql += " and O_State = 1 ";
+            }
+            else if (state == 2)
+            {
+                sql += " and O_State = 2 ";
+            }
+            return DBHelper.GetDataTable(sql);
+        }
+        /// <summary>
+        /// 根据年月日查询图表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ShowTuBiaoRi(int year, int month, int day)
+        {
+            string sql = @"select SessionSId,sum(O_Money) qian2,S_BeginTime from Orders join SessionS on SessionS.SId=SessionSId where SessionSId in (select SId from SessionS where DATEPART(YYYY,S_BeginTime)=" + year + " and DATEPART(MM,S_BeginTime)= " + month + " and  DATEPART(DAY,S_BeginTime)= " + day + ") and O_State=1  group by SessionSId,S_BeginTime";
+            return DBHelper.GetDataTable(sql);
+        }
+
         /// <summary>
         ///查询金额 
         /// </summary>
