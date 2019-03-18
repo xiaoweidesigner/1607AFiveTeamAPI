@@ -18,8 +18,7 @@ namespace MODEL
         [ForeignKey("MovieHall")]
         public int MovieHallId { get; set; }//放映厅外键
         public DateTime S_BeginTime { get; set; }//开始时间
-
-        public DateTime S_EndTime { get; set; }
+        public DateTime S_EndTime { get; set; }//结束时间
         public Movie Movie { get; set; }
         public MovieHall MovieHall { get; set; }
     }
