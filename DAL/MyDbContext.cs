@@ -22,6 +22,7 @@ namespace DAL
         public virtual DbSet<Movie> Movie { get; set; }
         public virtual DbSet<MovieHall> MovieHall { get; set; }
         public virtual DbSet<Order> Order { get; set; }
+        public virtual DbSet<Seat> Seat { get; set; }
         public virtual DbSet<SessionS> SessionS { get; set; }
     }
 }
