@@ -96,24 +96,5 @@ namespace DAL
                 return db.Database.SqlQuery<MovieHall>($"select * from MovieHalls where H_State in (3,4)").ToList();
             }
         }
-        //放映厅状态改变为打扫中、空闲中  在EmployeeDAL中
-        ///改变放映厅状态为放映中
-        public int ChangeMovieHallStatus2(int HId)
-        {
-            using (MyDbContext db=new MyDbContext())
-            {
-                int result= db.Database.ExecuteSqlCommand($"update MovieHalls set H_State=2 where HId={HId}");
-                return result;
-            }
-        }
-        //改变放映厅状态为需打扫
-        public int ChangeMovieHallStatus3(int HId)
-        {
-            using (MyDbContext db=new MyDbContext())
-            {
-                int result= db.Database.ExecuteSqlCommand($"update MovieHalls set H_State=3 where HId={HId}");
-                return result;
-            }
-        }
     }
 }
