@@ -48,8 +48,9 @@ namespace DAL
         {
             using (MyDbContext db = new MyDbContext())
             {
-
-                return db.Order.Include("SessionS").Include("Custom").ToList();
+                //return db.Order.Include("SessionS").Include("Custom").ToList();
+                List<Order> list=  db.Database.SqlQuery<Order>("select *,m.M_Name as MName,h.H_Name as HName from Orders o join SessionS s on o.SessionSId=s.SId join Movies m on s.MovieId = m.MId join MovieHalls h on s.MovieHallId = h.HId").ToList();
+                return list;
             }
         }
         /// <summary>
