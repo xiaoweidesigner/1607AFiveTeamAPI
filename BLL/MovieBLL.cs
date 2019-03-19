@@ -67,5 +67,15 @@ namespace BLL
         {
             return MovieDAL.CreateMovieDAL().Upd(t);
         }
+        //下架
+        public int Down(int MId)
+        {
+            return MovieDAL.CreateMovieDAL().Down(MId);
+        }
+        //上架
+        public int UP(int MId)
+        {
+            return MovieDAL.CreateMovieDAL().UP(MId);
+        }
     }
 }

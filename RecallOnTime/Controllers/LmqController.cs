@@ -61,6 +61,16 @@ namespace RecallOnTime.Controllers
         {
             return MovieBLL.CreateMovieBLL().Upd(t);
         }
+        //下架
+        public int Down(int MId)
+        {
+            return MovieBLL.CreateMovieBLL().Down(MId);
+        }
+        //上架
+        public int UP(int MId)
+        {
+            return MovieBLL.CreateMovieBLL().UP(MId);
+        }
         #endregion
 
         #region  场次

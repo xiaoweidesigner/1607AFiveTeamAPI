@@ -49,6 +49,7 @@
     <Compile Include="Finance.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieHall.cs" />
+    <Compile Include="OMCH.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DepartMent.cs" />

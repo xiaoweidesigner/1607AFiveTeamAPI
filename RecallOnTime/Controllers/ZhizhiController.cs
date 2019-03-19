@@ -94,6 +94,12 @@ namespace RecallOnTime.Controllers
             return orderBLL.Del(Id);
 
         }
+
+        //修改订单状态 为已处理
+        public int UpdOrderState(int OId)
+        {
+            return orderBLL.UpdOrderState(OId);
+        }
         /// <summary>
         /// 查询订单
         /// </summary>
@@ -125,6 +131,15 @@ namespace RecallOnTime.Controllers
         {
             return orderBLL.Upd(t);
 
+        }
+        /// <summary>
+        /// 显示订单及订单有关系的表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<OMCH> ShowAll()
+        {
+            return orderBLL.ShowAll();
         }
         #endregion
 

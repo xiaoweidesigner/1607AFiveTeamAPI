@@ -18,7 +18,7 @@ namespace MODEL
         public decimal O_Money { get; set; }//金额
         [ForeignKey("Custom")]
         public int CustomId { get; set; }//顾客表外键
-        public int O_State { get; set; }//状态     1订票  2退票
+        public int O_State { get; set; }//状态   1已处理 2未处理  
         //[ForeignKey("Seat")]
         //public int SeatId { get; set; }
 

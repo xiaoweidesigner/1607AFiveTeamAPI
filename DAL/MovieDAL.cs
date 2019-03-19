@@ -84,5 +84,21 @@ namespace DAL
                 return db.SaveChanges();
             }
         }
+        //下架
+        public int Down(int MId)
+        {
+            using (MyDbContext db=new MyDbContext())
+            {
+                return db.Database.ExecuteSqlCommand($"update Movies set M_State=2 where MId={MId}");
+            }
+        }
+        //上架
+        public int UP(int MId)
+        {
+            using (MyDbContext db = new MyDbContext())
+            {
+                return db.Database.ExecuteSqlCommand($"update Movies set M_State=1 where MId={MId}");
+            }
+        }
     }
 }
