@@ -126,6 +126,13 @@ namespace RecallOnTime.Controllers
             return orderBLL.Upd(t);
 
         }
+        [HttpPut]
+        //处理订单状态
+        public int DisposedOrder(int Oid)
+        {
+            return orderBLL.DisposedOrder(Oid);
+        }
+
         #endregion
 
 

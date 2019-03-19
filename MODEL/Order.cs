@@ -21,7 +21,10 @@ namespace MODEL
         public int O_State { get; set; }//状态     1订票  2退票
         //[ForeignKey("Seat")]
         //public int SeatId { get; set; }
-
+        [NotMapped]
+        public string MName { get; set; }
+        [NotMapped]
+        public string HName { get; set; }
         //public Seat Seat { get; set; }
         public SessionS SessionS { get; set; }
         public Custom Custom { get; set; }

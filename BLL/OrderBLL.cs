@@ -60,5 +60,10 @@ namespace BLL
             return dal.Upd(t);
 
         }
+        //处理订单状态
+        public int DisposedOrder(int Oid)
+        {
+            return dal.DisposedOrder(Oid);
+        }
     }
 }

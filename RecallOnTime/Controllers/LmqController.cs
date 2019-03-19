@@ -61,6 +61,12 @@ namespace RecallOnTime.Controllers
         {
             return MovieBLL.CreateMovieBLL().Upd(t);
         }
+        //修改上下架
+        [HttpPut]
+        public int UpdJia(int State, int mid)
+        {
+            return MovieBLL.CreateMovieBLL().UpdJia(State,mid);
+        }
         #endregion
 
         #region  场次

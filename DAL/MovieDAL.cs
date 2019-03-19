@@ -84,5 +84,12 @@ namespace DAL
                 return db.SaveChanges();
             }
         }
+        //修改上下架
+        public int UpdJia(int State,int mid) {
+            using (MyDbContext db=new MyDbContext()) {
+                int result= db.Database.ExecuteSqlCommand($"update movies set M_State={State} where MId={mid}");
+                return result;
+            }
+        }
     }
 }

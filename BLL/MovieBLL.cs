@@ -67,5 +67,10 @@ namespace BLL
         {
             return MovieDAL.CreateMovieDAL().Upd(t);
         }
+        //修改上下架
+        public int UpdJia(int State, int mid)
+        {
+            return MovieDAL.CreateMovieDAL().UpdJia(State,mid);
+        }
     }
 }
