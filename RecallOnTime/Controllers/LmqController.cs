@@ -166,5 +166,24 @@ namespace RecallOnTime.Controllers
             return MovieHallBLL.CreateMovieHallBLL().Upd(t);
         }
         #endregion
+        #region 微信端
+        //获取今日影讯
+        [HttpGet]
+        public List<Movie> GetTodaymovie()
+        {
+            List<Movie> list = ShowMovie();
+            string dt = DateTime.Now.ToLongDateString();
+            list = list.Where(s => s.M_Show.ToLongDateString().Contains(dt)).ToList();
+            return list;
+        }
+        //获取即将上映影讯
+        [HttpGet]
+        public List<Movie> GetFuturemovie()
+        {
+            List<Movie> list = ShowMovie();
+            list = list.Where(s => s.M_Show>DateTime.Now.AddDays(1)).ToList();
+            return list;
+        }
+        #endregion
     }
 }

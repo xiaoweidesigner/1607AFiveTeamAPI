@@ -94,5 +94,14 @@ namespace RecallOnTime.Controllers
         {
             return FinanceBLL.CreateFinanceBLL().ShowFinance();
         }
+        public IEnumerable<dynamic> GetBanner()
+        {
+            return new List<dynamic>
+            {
+                new { lunbo_pic = "http://localhost:5646/Images/a.JPG" },
+                new { lunbo_pic = "http://localhost:5646/Images/b.JPG" },
+                new { lunbo_pic = "http://localhost:5646/Images/c.JPG" }
+            };
+        }
     }
 }
