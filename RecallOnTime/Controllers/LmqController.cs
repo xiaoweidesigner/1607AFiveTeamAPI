@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using BLL;
 using MODEL;
+using Newtonsoft.Json;
 
 namespace RecallOnTime.Controllers
 {
@@ -174,6 +175,17 @@ namespace RecallOnTime.Controllers
         public int UpdMovieHall(MovieHall t)
         {
             return MovieHallBLL.CreateMovieHallBLL().Upd(t);
+        }
+        #endregion
+
+        #region 微信端
+        //获取今日电影信息
+        [HttpGet]
+        public string ShowIndexNow()  
+        {
+            List<Movie> list = MovieBLL.CreateMovieBLL().Show();//所有电影信息
+            list = list.Where(s => s.M_Show == DateTime.Now).ToList();//今日影讯
+            return JsonConvert.SerializeObject(list);
         }
         #endregion
     }
