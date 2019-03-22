@@ -60,5 +60,18 @@ namespace BLL
             return dal.Upd(t);
 
         }
+        //修改订单状态 为已处理
+        public int UpdOrderState(int OId)
+        {
+            return dal.UpdOrderState(OId);
+        }
+        /// <summary>
+        /// 显示订单及订单有关系的表
+        /// </summary>
+        /// <returns></returns>
+        public List<OMCH> ShowAll()
+        {
+            return dal.ShowAll();
+        }
     }
 }

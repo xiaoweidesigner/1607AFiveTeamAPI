@@ -93,6 +93,7 @@ namespace DAL
         {
             using (MyDbContext db=new MyDbContext())
             {
+                
                 return db.Database.SqlQuery<MovieHall>($"select * from MovieHalls where H_State in (3,4)").ToList();
             }
         }

@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using BLL;
 using MODEL;
+using Newtonsoft.Json;
 
 namespace RecallOnTime.Controllers
 {
@@ -60,6 +61,16 @@ namespace RecallOnTime.Controllers
         public int UpdMovie(Movie t)
         {
             return MovieBLL.CreateMovieBLL().Upd(t);
+        }
+        //下架
+        public int Down(int MId)
+        {
+            return MovieBLL.CreateMovieBLL().Down(MId);
+        }
+        //上架
+        public int UP(int MId)
+        {
+            return MovieBLL.CreateMovieBLL().UP(MId);
         }
         #endregion
 

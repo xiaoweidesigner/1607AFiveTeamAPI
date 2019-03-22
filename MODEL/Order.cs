@@ -18,11 +18,10 @@ namespace MODEL
         public decimal O_Money { get; set; }//金额
         [ForeignKey("Custom")]
         public int CustomId { get; set; }//顾客表外键
-        public int O_State { get; set; }//状态     1订票  2退票
-        //[ForeignKey("Seat")]
-        //public int SeatId { get; set; }
+        public int O_State { get; set; }//状态   1已处理 2未处理   影院用
+        public int  CO_State { get; set; }//顾客订单状态  1、订票  2、退票 3、已使用 
+        public DateTime O_STime { get; set; }
 
-        //public Seat Seat { get; set; }
         public SessionS SessionS { get; set; }
         public Custom Custom { get; set; }
     }
