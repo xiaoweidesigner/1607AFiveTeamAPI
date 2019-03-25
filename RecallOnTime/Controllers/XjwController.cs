@@ -83,16 +83,7 @@ namespace RecallOnTime.Controllers
             int Code;
             return EmployeeBLL.CreateEmployeeBLL().UpdEmployeeStatus2(EId, HId, out Code);
         }
-        ///改变放映厅状态为放映中
-        public int ChangeMovieHallStatus2(int HId)
-        {
-            return MovieHallBLL.CreateMovieHallBLL().ChangeMovieHallStatus2(HId);
-        }
-        //改变放映厅状态为需打扫
-        public int ChangeMovieHallStatus3(int HId)
-        {
-            return MovieHallBLL.CreateMovieHallBLL().ChangeMovieHallStatus3(HId);
-        }
+     
         #endregion
 
         #region 评论的CRUD 及操作
@@ -122,5 +113,6 @@ namespace RecallOnTime.Controllers
         }
         #endregion
         
+
     }
 }

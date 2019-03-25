@@ -75,15 +75,5 @@ namespace BLL
         {
             return MovieHallDAL.CreateMovieHallDAL().SH();
         }
-        ///改变放映厅状态为放映中
-        public int ChangeMovieHallStatus2(int HId)
-        {
-            return MovieHallDAL.CreateMovieHallDAL().ChangeMovieHallStatus2(HId);
-        }
-        //改变放映厅状态为需打扫
-        public int ChangeMovieHallStatus3(int HId)
-        {
-            return MovieHallDAL.CreateMovieHallDAL().ChangeMovieHallStatus3(HId);
-        }
     }
 }
