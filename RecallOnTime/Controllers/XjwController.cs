@@ -89,6 +89,7 @@ namespace RecallOnTime.Controllers
         [HttpPost]
         public int AddComment(Comment comment)
         {
+            comment.C_Time = DateTime.Now;
             return CommentBLL.CreateCommentBll().Add(comment);
         }
         [HttpGet]
@@ -108,9 +109,20 @@ namespace RecallOnTime.Controllers
         [HttpPost]
         public int UpdComment(Comment comment)
         {
+            
             return CommentBLL.CreateCommentBll().Upd(comment);
         }
         #endregion
-        
+
+        #region 微信端
+        [HttpGet]
+        public List<Comment> ShowMovieId(int Id)
+        {
+            List<Comment> list = ShowComment();
+            list = list.Where(s => s.MovieId == Id).ToList();
+            return list;
+        }
+        #endregion
+
     }
 }
