@@ -96,7 +96,7 @@ namespace DAL
         {
             using (MyDbContext db = new MyDbContext())
             {
-                List<OMCH> list= db.Database.SqlQuery<OMCH>($"select *,M.M_Name as MName,mh.H_Name as HName,C.C_Name as CName,C.C_Phote as Phone,S.S_BeginTime as BeginTime from Orders O join SessionS S on O.SessionSId=SId join Movies M on S.MovieId=M.MId join MovieHalls mh on S.MovieHallId=mh.HId join Customs C on O.CustomId=C.CId").ToList();
+                List<OMCH> list= db.Database.SqlQuery<OMCH>($"select *,M.M_Name as MName,mh.H_Name as HName,C.C_Name as CName,C.C_Phote as Phone,S.S_BeginTime as BeginTime from Orders O join SessionS S on O.SessionSId=SId join Movies M on S.MovieId=M.MId join MovieHalls mh on S.MovieHallId=mh.HId join Customs C on O.CustomId=C.CId where O.CO_State!=2").ToList();
                 return list;
             }
         }
