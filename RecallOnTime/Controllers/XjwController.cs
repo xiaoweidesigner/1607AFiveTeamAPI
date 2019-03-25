@@ -111,6 +111,16 @@ namespace RecallOnTime.Controllers
             return CommentBLL.CreateCommentBll().Upd(comment);
         }
         #endregion
+
+        SeatBLL bll = new SeatBLL();
+        //找到该场次放映厅的所有座位
+        [HttpGet]
+        public List<Seat> ShowSeat(int HId)
+        {
+            List<Seat> list = bll.Show();
+            list = list.Where(s => s.MovieHallId == HId).ToList();
+            return list;
+        }
         
     }
 }
