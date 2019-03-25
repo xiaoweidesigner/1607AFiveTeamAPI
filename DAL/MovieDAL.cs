@@ -84,11 +84,20 @@ namespace DAL
                 return db.SaveChanges();
             }
         }
-        //修改上下架
-        public int UpdJia(int State,int mid) {
-            using (MyDbContext db=new MyDbContext()) {
-                int result= db.Database.ExecuteSqlCommand($"update movies set M_State={State} where MId={mid}");
-                return result;
+        //下架
+        public int Down(int MId)
+        {
+            using (MyDbContext db=new MyDbContext())
+            {
+                return db.Database.ExecuteSqlCommand($"update Movies set M_State=2 where MId={MId}");
+            }
+        }
+        //上架
+        public int UP(int MId)
+        {
+            using (MyDbContext db = new MyDbContext())
+            {
+                return db.Database.ExecuteSqlCommand($"update Movies set M_State=1 where MId={MId}");
             }
         }
     }

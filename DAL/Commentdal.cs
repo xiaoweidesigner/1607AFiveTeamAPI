@@ -55,7 +55,7 @@ namespace DAL
             using (MyDbContext db=new MyDbContext())
             {
                 db.Database.CreateIfNotExists();
-                return db.Comment.Include("Custom").ToList();
+                return db.Comment.Include("Custom").Include("Movie").ToList();
             }
         }
         //显示某条评论信息

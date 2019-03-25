@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using BLL;
 using MODEL;
+using Newtonsoft.Json;
 
 namespace RecallOnTime.Controllers
 {
@@ -61,11 +62,15 @@ namespace RecallOnTime.Controllers
         {
             return MovieBLL.CreateMovieBLL().Upd(t);
         }
-        //修改上下架
-        [HttpPut]
-        public int UpdJia(int State, int mid)
+        //下架
+        public int Down(int MId)
         {
-            return MovieBLL.CreateMovieBLL().UpdJia(State,mid);
+            return MovieBLL.CreateMovieBLL().Down(MId);
+        }
+        //上架
+        public int UP(int MId)
+        {
+            return MovieBLL.CreateMovieBLL().UP(MId);
         }
         #endregion
 
@@ -170,6 +175,25 @@ namespace RecallOnTime.Controllers
         public int UpdMovieHall(MovieHall t)
         {
             return MovieHallBLL.CreateMovieHallBLL().Upd(t);
+        }
+        #endregion
+        #region 微信端
+        //获取今日影讯
+        [HttpGet]
+        public List<Movie> GetTodaymovie()
+        {
+            List<Movie> list = ShowMovie();
+            string dt = DateTime.Now.ToLongDateString();
+            list = list.Where(s => s.M_Show.ToLongDateString().Contains(dt)).ToList();
+            return list;
+        }
+        //获取即将上映影讯
+        [HttpGet]
+        public List<Movie> GetFuturemovie()
+        {
+            List<Movie> list = ShowMovie();
+            list = list.Where(s => s.M_Show>DateTime.Now.AddDays(1)).ToList();
+            return list;
         }
         #endregion
     }

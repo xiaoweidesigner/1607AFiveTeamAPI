@@ -88,21 +88,33 @@ namespace DAL
             }
         }
 
-
         /// <summary>
         /// 根据年月日查询财务
         /// </summary>
         /// <returns></returns>
         public DataTable ShowCaiwuRi(int year, int month, int day, int state)
         {
-            string sql = @"select sum(O_Money) qian,count(*) shu from Orders join SessionS on SessionS.SId=SessionSId where SessionSId in (select SId from SessionS where DATEPART(YYYY,S_BeginTime)=" + year + " and DATEPART(MM, S_BeginTime)= " + month + " and DATEPART(DAY, S_BeginTime)= " + day + ")  ";
+            string sql = "select sum(O_Money) qian,count(*) shu from Orders join SessionS on SessionS.SId=SessionSId where SessionSId in (select SId from SessionS where DATEPART(YYYY,S_BeginTime)=" + year;
+            if (year != 0 && month != 0 && day == 0)
+            {
+                sql += "  and DATEPART(MM, S_BeginTime)= " + month;
+            }
+            if ((year != 0 && month != 0 && day != 0) || (year == 0 && month == 0 && day == 0))
+            {
+                sql += "  and DATEPART(MM, S_BeginTime)= " + month + " and DATEPART(DAY, S_BeginTime)= " + day;
+            }
+
+            if (state == 0)
+            {
+                sql += ") ";
+            }
             if (state == 1)
             {
-                sql += " and O_State = 1 ";
+                sql += ") and O_State = 1 ";
             }
             else if (state == 2)
             {
-                sql += " and O_State = 2 ";
+                sql += ") and O_State = 2 ";
             }
             return DBHelper.GetDataTable(sql);
         }
@@ -112,7 +124,16 @@ namespace DAL
         /// <returns></returns>
         public DataTable ShowTuBiaoRi(int year, int month, int day)
         {
-            string sql = @"select SessionSId,sum(O_Money) qian2,S_BeginTime from Orders join SessionS on SessionS.SId=SessionSId where SessionSId in (select SId from SessionS where DATEPART(YYYY,S_BeginTime)=" + year + " and DATEPART(MM,S_BeginTime)= " + month + " and  DATEPART(DAY,S_BeginTime)= " + day + ") and O_State=1  group by SessionSId,S_BeginTime";
+            string sql = "select SessionSId,sum(O_Money) qian2,S_BeginTime from Orders join SessionS on SessionS.SId=SessionSId where SessionSId in (select SId from SessionS where DATEPART(YYYY,S_BeginTime)=" + year;
+            if (year != 0 && month != 0 && day == 0)
+            {
+                sql += "  and DATEPART(MM, S_BeginTime)= " + month;
+            }
+            if ((year != 0 && month != 0 && day != 0) || (year == 0 && month == 0 && day == 0))
+            {
+                sql += "  and DATEPART(MM, S_BeginTime)= " + month + " and DATEPART(DAY, S_BeginTime)= " + day;
+            }
+            sql += ") and O_State=1  group by SessionSId,S_BeginTime";
             return DBHelper.GetDataTable(sql);
         }
 
