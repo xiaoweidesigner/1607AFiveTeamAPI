@@ -12,7 +12,7 @@ namespace DAL
     public static class DBHelper
     {
         //获取web.config里的连接字符串
-        public static string strCon = "Data Source = 10.1.152.4; uid = sa; pwd =5841314521; database = ZhuiYi";
+        public static string strCon = "Data Source = 10.1.152.30; uid = sa; pwd =5841314521; database = ZhuiYi";
           
                                        
         /// <summary>
