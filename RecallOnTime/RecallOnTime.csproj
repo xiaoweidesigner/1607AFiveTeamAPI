@@ -191,9 +191,14 @@
     <Content Include="Images\a.jpg" />
     <Content Include="Images\b.jpg" />
     <Content Include="Images\c.jpg" />
+    <Content Include="MovieHallsImg\20190325092123幕天席地厅.jpg" />
+    <Content Include="MovieHallsImg\20190325092149孤标傲世厅.jpg" />
     <Content Include="MovieImg\20190322042359144123.19975983_270X405X4.jpg" />
     <Content Include="MovieImg\20190322042722171817.18198921_270X405X4.jpg" />
     <Content Include="MovieImg\20190322115421095714.33859824_270X405X4.jpg" />
+    <Content Include="MovieImg\2019032508390020190322115421095714.33859824_270X405X4.jpg" />
+    <Content Include="MovieImg\2019032508403920190322042722171817.18198921_270X405X4.jpg" />
+    <Content Include="MovieImg\2019032508421120190322042359144123.19975983_270X405X4.jpg" />
     <Content Include="MovieImg\logo11.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
