@@ -224,5 +224,19 @@ namespace RecallOnTime.Controllers
 
             return financeBLL.ShowTuBiaoRi(year, month, day);
         }
+        //小程序查询订单的座位信息
+        //[HttpGet]
+        //public List<dynamic> GetOrderBySId(int SId)
+        //{
+        //    var list = ShowOrder();
+        //    var seat = list.Where(l=>l.SessionSId == SId).ToList();
+        //    List<dynamic> seatList = new List<dynamic>();//所有座位
+        //    foreach (var item in seat)
+        //    {
+        //        var seats =item.Number.Split('/');
+        //        seatList.Add(seats);
+        //    }
+        //    return seatList;
+        //}
     }
 }

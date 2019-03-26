@@ -201,6 +201,12 @@ namespace RecallOnTime.Controllers
             list = list.Where(s => s.M_Show>DateTime.Now.AddDays(1)).ToList();
             return list;
         }
+        //小程序根据电影名称查询场次
+        [HttpGet]
+        public List<SessionS> ShowByMIdSessionS(int MId)
+        {
+            return ShowSessionS().Where(s => s.MovieId == MId).ToList();
+        }
         #endregion
     }
 }
