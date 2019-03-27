@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
+using Newtonsoft.Json;
 
 namespace DAL
 {
@@ -85,7 +86,7 @@ namespace DAL
         {
             using (MyDbContext db = new MyDbContext())
             {
-                return db.Database.ExecuteSqlCommand($"update Orders set O_State=1 where OId={OId}");
+                return db.Database.ExecuteSqlCommand($"update Orders set CO_State=2 where OId={OId}");
             }
         }
         /// <summary>
@@ -99,6 +100,42 @@ namespace DAL
                 List<OMCH> list= db.Database.SqlQuery<OMCH>($"select *,M.M_Name as MName,mh.H_Name as HName,C.C_Name as CName,C.C_Phote as Phone,S.S_BeginTime as BeginTime from Orders O join SessionS S on O.SessionSId=SId join Movies M on S.MovieId=M.MId join MovieHalls mh on S.MovieHallId=mh.HId join Customs C on O.CustomId=C.CId where O.CO_State!=2").ToList();
                 return list;
             }
+        }
+        /// <summary>
+        /// 未使用
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        public List<UserOrder> orders1(string tel)
+        {
+            string sql = "select * from Orders join SessionS on SessionSId=SId join Movies on MovieId=MId where CustomId = (select CId from Customs where C_Cellphone = '" + tel + "') and S_BeginTime > GETDATE() and CO_State = 1";
+
+            List<UserOrder> list = JsonConvert.DeserializeObject<List<UserOrder>>(JsonConvert.SerializeObject(DBHelper.GetDataTable(sql)));
+            return list;
+        }
+        /// <summary>
+        /// 已完成
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        public List<UserOrder> orders2(string tel)
+        {
+            string sql = "select * from Orders join SessionS on SessionSId=SId join Movies on MovieId=MId where CustomId = (select CId from Customs where C_Cellphone = '" + tel + "') and S_BeginTime < GETDATE() and CO_State = 1";
+
+            List<UserOrder> list = JsonConvert.DeserializeObject<List<UserOrder>>(JsonConvert.SerializeObject(DBHelper.GetDataTable(sql)));
+            return list;
+        }
+        /// <summary>
+        /// 已取消
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        public List<UserOrder> orders3(string tel)
+        {
+            string sql = "select * from Orders join SessionS on SessionSId=SId join Movies on MovieId=MId where CustomId = (select CId from Customs where C_Cellphone = '" + tel + "') and CO_State=2";
+
+            List<UserOrder> list = JsonConvert.DeserializeObject<List<UserOrder>>(JsonConvert.SerializeObject(DBHelper.GetDataTable(sql)));
+            return list;
         }
     }
 }

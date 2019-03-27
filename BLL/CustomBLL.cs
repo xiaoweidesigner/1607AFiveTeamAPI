@@ -61,5 +61,14 @@ namespace BLL
         {
             return CustomDAL.CreateCustomDal().JoinHY(CId,C_Name,Img);
         }
+        /// <summary>
+        /// 根据手机号查询
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        public List<Custom> shouCustomTel(string tel)
+        {
+            return CustomDAL.CreateCustomDal().shouCustomTel(tel);
+        }
     }
 }

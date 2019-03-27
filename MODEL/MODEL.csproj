@@ -55,6 +55,7 @@
     <Compile Include="DepartMent.cs" />
     <Compile Include="Seat.cs" />
     <Compile Include="SessionS.cs" />
+    <Compile Include="UserOrder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -94,8 +94,8 @@ namespace RecallOnTime.Controllers
             return orderBLL.Del(Id);
 
         }
-
-        //修改订单状态 为已处理
+       
+        //修改订单状态 为已取消
         public int UpdOrderState(int OId)
         {
             return orderBLL.UpdOrderState(OId);
@@ -250,6 +250,51 @@ namespace RecallOnTime.Controllers
             o.O_STime = DateTime.Now;
             int result = orderBLL.Add(o);
             return result;
+        }
+
+        /// <summary>
+        /// 根据手机号查询
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public List<Custom> shouCustomTel(string tel)
+        {
+            return CustomBLL.CreateCustomBll().shouCustomTel(tel);
+        }
+
+
+
+
+        /// <summary>
+        /// 未使用
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public List<UserOrder> orders1(string tel)
+        {
+            return orderBLL.orders1(tel);
+        }
+        /// <summary>
+        /// 已完成
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public List<UserOrder> orders2(string tel)
+        {
+            return orderBLL.orders2(tel);
+        }
+        /// <summary>
+        /// 已取消
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public List<UserOrder> orders3(string tel)
+        {
+            return orderBLL.orders3(tel);
         }
         #endregion
 
