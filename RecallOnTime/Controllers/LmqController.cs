@@ -177,8 +177,9 @@ namespace RecallOnTime.Controllers
             return MovieHallBLL.CreateMovieHallBLL().Upd(t);
         }
         #endregion
-        #region 微信端
+                #region 微信端
         //获取今日影讯
+
         [HttpGet]
         public List<Movie> GetTodaymovie()
         {
@@ -202,5 +203,11 @@ namespace RecallOnTime.Controllers
             return ShowSessionS().Where(s => s.MovieId == MId).ToList();
         }
         #endregion
+        //小程序根据电影名称查询场次
+        [HttpGet]
+        public List<SessionS> ShowByMIdSessionS(int MId)
+        {
+            return ShowSessionS().Where(s => s.MovieId == MId).ToList();
+        }
     }
 }

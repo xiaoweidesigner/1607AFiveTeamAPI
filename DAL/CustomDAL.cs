@@ -139,5 +139,14 @@ namespace DAL
 
             }
         }
+        //下单成功  减去个人余额
+        public int UpdYuE(int CId, float C_integral)
+        {
+            using (MyDbContext db=new MyDbContext())
+            {
+                int result= db.Database.ExecuteSqlCommand($"update Customs set C_integral=C_integral-{C_integral} where CId={CId}");
+                return result;
+            }
+        }
     }
 }

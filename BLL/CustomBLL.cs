@@ -70,5 +70,10 @@ namespace BLL
         {
             return CustomDAL.CreateCustomDal().shouCustomTel(tel);
         }
+        //下单成功  减去个人余额
+        public int UpdYuE(int CId, float C_integral)
+        {
+            return CustomDAL.CreateCustomDal().UpdYuE(CId, C_integral);
+        }
     }
 }
