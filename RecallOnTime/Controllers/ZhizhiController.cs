@@ -221,22 +221,37 @@ namespace RecallOnTime.Controllers
         [HttpGet]
         public DataTable ShowTuBiaoRi(int year, int month, int day)
         {
-
             return financeBLL.ShowTuBiaoRi(year, month, day);
         }
-        //小程序查询订单的座位信息
-        //[HttpGet]
-        //public List<dynamic> GetOrderBySId(int SId)
-        //{
-        //    var list = ShowOrder();
-        //    var seat = list.Where(l=>l.SessionSId == SId).ToList();
-        //    List<dynamic> seatList = new List<dynamic>();//所有座位
-        //    foreach (var item in seat)
-        //    {
-        //        var seats =item.Number.Split('/');
-        //        seatList.Add(seats);
-        //    }
-        //    return seatList;
-        //}
+        #region 微信端
+        //获取所有座位信息
+        SeatBLL bl = new SeatBLL();
+        [HttpGet]
+        public List<Seat> GetSeats(int HId)
+        {
+            List<Seat> list= bl.Show().Where(s=>s.MovieHallId==HId).ToList();
+            return list;
+        }
+        //更改座位状态
+        [HttpGet]
+        public int UpdSeatWX(string Ids)
+        {
+            string strResult = Ids.Substring(0,Ids.LastIndexOf(','));
+            int result= seatBLL.UpdSeats(strResult);
+            return result;
+        }
+        
+        //添加订单 
+        [HttpPost]
+        public int AddOrderWX(Order o)
+        {
+            o.CO_State = 1;//默认  下订单
+            o.O_State = 2;//默认  未处理
+            o.O_STime = DateTime.Now;
+            int result = orderBLL.Add(o);
+            return result;
+        }
+        #endregion
+
     }
 }

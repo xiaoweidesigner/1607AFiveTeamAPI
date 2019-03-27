@@ -79,7 +79,16 @@ namespace DAL
                 return db.SaveChanges();
             }
         }
-
+        //座位被选定
+        public int UpdSeats(string Ids)
+        {
+            using (MyDbContext db=new MyDbContext())
+            {
+                string sql = $"update Seats set IsCheck=1 where SeId in ({Ids})";
+                int result = db.Database.ExecuteSqlCommand(sql);
+                return result;
+            }
+        }
        
     }
 }
