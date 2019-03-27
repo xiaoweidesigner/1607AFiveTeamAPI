@@ -60,7 +60,10 @@ namespace BLL
             return dal.Upd(t);
 
         }
-
+        public int UpdSeats(string Ids)
+        {
+            return dal.UpdSeats(Ids);
+        }
 
     }
 }
