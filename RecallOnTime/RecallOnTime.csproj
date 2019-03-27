@@ -221,6 +221,12 @@
     <Content Include="MovieImg\20190321031010f529c903cf3db4997907dc67beca3a3e.jpg" />
     <Content Include="MovieImg\20190321091203adf.jpg" />
     <Content Include="MovieImg\20190321091433adf.jpg" />
+    <Content Include="MovieImg\20190322042359144123.19975983_270X405X4.jpg" />
+    <Content Include="MovieImg\20190322042722171817.18198921_270X405X4.jpg" />
+    <Content Include="MovieImg\20190322115421095714.33859824_270X405X4.jpg" />
+    <Content Include="MovieImg\2019032508390020190322115421095714.33859824_270X405X4.jpg" />
+    <Content Include="MovieImg\2019032508403920190322042722171817.18198921_270X405X4.jpg" />
+    <Content Include="MovieImg\2019032508421120190322042359144123.19975983_270X405X4.jpg" />
     <Content Include="MovieImg\logo11.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
