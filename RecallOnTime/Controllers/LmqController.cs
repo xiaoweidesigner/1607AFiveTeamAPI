@@ -114,12 +114,6 @@ namespace RecallOnTime.Controllers
         {
             return SessionSBLL.CreateSessionSBLL().ShowById(Id);
         }
-        //小程序根据电影名称查询场次
-        [HttpGet]
-        public List<SessionS> ShowByMIdSessionS(int MId)
-        {
-            return ShowSessionS().Where(s => s.MovieId == MId).ToList();
-        }
         /// <summary>
         /// 修改场次信息
         /// </summary>

@@ -251,6 +251,14 @@ namespace RecallOnTime.Controllers
             int result = orderBLL.Add(o);
             return result;
         }
+        //下单成功  减去个人余额
+        [HttpPost]
+        public int UpdYuE(Custom c)
+        {
+            int CId= c.CId;
+            float C_integral = c.C_integral;
+            return CustomBLL.CreateCustomBll().UpdYuE(CId,C_integral);
+        }
         #endregion
 
     }
