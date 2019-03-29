@@ -7,6 +7,8 @@ using System.Web.Http;
 using BLL;
 using MODEL;
 using Newtonsoft.Json;
+using RecallOnTime.Models;
+using StackExchange.Redis;
 
 namespace RecallOnTime.Controllers
 {
@@ -38,9 +40,27 @@ namespace RecallOnTime.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<Movie> ShowMovie()
+        public RedisValue[] ShowMovie()
         {
-            return MovieBLL.CreateMovieBLL().Show();
+            var conn = RedisGetConn.GetConn();//获取连接源
+            var db = conn.GetDatabase();//获取数据库
+            if (!db.KeyExists("GetMovies"))//如果数据库中不存在key为GetCustom的键 则创建一个sorted set有序集合
+            {
+                List<Movie> list = MovieBLL.CreateMovieBLL().Show();//接收数据库中的数据
+                SortedSetEntry[] sortedset = new SortedSetEntry[list.Count];//创建一个数组 长度为数据库数据条数
+                //遍历sql server数据库中的数据  加入数组
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var value = JsonConvert.SerializeObject(list[i]);
+                    double did = Convert.ToDouble(list[i].MId);
+                    SortedSetEntry sse = new SortedSetEntry(value, did);
+                    sortedset[i] = sse;
+                }
+                db.SortedSetAdd("GetMovies", sortedset);//将数据放入有序集合  key为GetCustom value为数据
+                db.KeyExpire("GetMovies", DateTime.Now.AddMinutes(3));//设置数据库中key为key为GetCustom的集合 过期时间为3分钟
+            }
+            RedisValue[] redis = db.SortedSetRangeByRank("GetMovies");
+            return redis;
         }
         /// <summary>
         /// 根据Id查询影片
@@ -100,9 +120,27 @@ namespace RecallOnTime.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<SessionS> ShowSessionS()
+        public RedisValue[] ShowSessionS()
         {
-            return SessionSBLL.CreateSessionSBLL().Show();
+            var conn = RedisGetConn.GetConn();//获取连接源
+            var db = conn.GetDatabase();//获取数据库
+            if (!db.KeyExists("GetSessions"))//如果数据库中不存在key为GetCustom的键 则创建一个sorted set有序集合
+            {
+                List<SessionS> list = SessionSBLL.CreateSessionSBLL().Show();//接收数据库中的数据
+                SortedSetEntry[] sortedset = new SortedSetEntry[list.Count];//创建一个数组 长度为数据库数据条数
+                //遍历sql server数据库中的数据  加入数组
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var value = JsonConvert.SerializeObject(list[i]);
+                    double did = Convert.ToDouble(list[i].SId);
+                    SortedSetEntry sse = new SortedSetEntry(value, did);
+                    sortedset[i] = sse;
+                }
+                db.SortedSetAdd("GetSessions", sortedset);//将数据放入有序集合  key为GetCustom value为数据
+                db.KeyExpire("GetSessions", DateTime.Now.AddMinutes(3));//设置数据库中key为key为GetCustom的集合 过期时间为3分钟
+            }
+            RedisValue[] redis = db.SortedSetRangeByRank("GetSessions");
+            return redis;
         }
         /// <summary>
         /// 根据Id查询场次
@@ -152,9 +190,27 @@ namespace RecallOnTime.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<MovieHall> ShowMovieHall()
+        public RedisValue[] ShowMovieHall()
         {
-            return MovieHallBLL.CreateMovieHallBLL().Show();
+            var conn = RedisGetConn.GetConn();//获取连接源
+            var db = conn.GetDatabase();//获取数据库
+            if (!db.KeyExists("GetMovieHalls"))//如果数据库中不存在key为GetCustom的键 则创建一个sorted set有序集合
+            {
+                List<MovieHall> list = MovieHallBLL.CreateMovieHallBLL().Show();//接收数据库中的数据
+                SortedSetEntry[] sortedset = new SortedSetEntry[list.Count];//创建一个数组 长度为数据库数据条数
+                //遍历sql server数据库中的数据  加入数组
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var value = JsonConvert.SerializeObject(list[i]);
+                    double did = Convert.ToDouble(list[i].HId);
+                    SortedSetEntry sse = new SortedSetEntry(value, did);
+                    sortedset[i] = sse;
+                }
+                db.SortedSetAdd("GetMovieHalls", sortedset);//将数据放入有序集合  key为GetCustom value为数据
+                db.KeyExpire("GetMovieHalls", DateTime.Now.AddMinutes(3));//设置数据库中key为key为GetCustom的集合 过期时间为3分钟
+            }
+            RedisValue[] redis = db.SortedSetRangeByRank("GetMovieHalls");
+            return redis;
         }
         /// <summary>
         /// 根据Id返填
@@ -177,13 +233,12 @@ namespace RecallOnTime.Controllers
             return MovieHallBLL.CreateMovieHallBLL().Upd(t);
         }
         #endregion
-                #region 微信端
+        #region 微信端
         //获取今日影讯
-
         [HttpGet]
         public List<Movie> GetTodaymovie()
         {
-            List<Movie> list = ShowMovie();
+            List<Movie> list = MovieBLL.CreateMovieBLL().Show();
             string dt = DateTime.Now.ToLongDateString();
             list = list.Where(s => s.M_Show.ToLongDateString().Contains(dt)).ToList();
             return list;
@@ -192,15 +247,15 @@ namespace RecallOnTime.Controllers
         [HttpGet]
         public List<Movie> GetFuturemovie()
         {
-            List<Movie> list = ShowMovie();
-            list = list.Where(s => s.M_Show>DateTime.Now.AddDays(1)).ToList();
+            List<Movie> list = MovieBLL.CreateMovieBLL().Show();
+            list = list.Where(s => s.M_Show > DateTime.Now.AddDays(1)).ToList();
             return list;
         }
         //小程序根据电影名称查询场次
         [HttpGet]
         public List<SessionS> ShowByMIdSessionS(int MId)
         {
-            return ShowSessionS().Where(s => s.MovieId == MId).ToList();
+            return SessionSBLL.CreateSessionSBLL().Show().Where(s => s.MovieId == MId).ToList();
         }
         #endregion
     }

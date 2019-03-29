@@ -6,6 +6,9 @@ using System.Net.Http;
 using System.Web.Http;
 using BLL;
 using MODEL;
+using StackExchange.Redis;
+using RecallOnTime.Models;
+using Newtonsoft.Json;
 
 namespace RecallOnTime.Controllers
 {
@@ -18,9 +21,27 @@ namespace RecallOnTime.Controllers
             return CustomBLL.CreateCustomBll().Add(custom);
         }
         [HttpGet]
-        public List<Custom> ShowCustom()
+        public RedisValue[] ShowCustom()
         {
-            return CustomBLL.CreateCustomBll().Show();
+            var conn = RedisGetConn.GetConn();//获取连接源
+            var db = conn.GetDatabase();//获取数据库
+            if (!db.KeyExists("GetCustom"))//如果数据库中不存在key为GetCustom的键 则创建一个sorted set有序集合
+            {
+                List<Custom> list = CustomBLL.CreateCustomBll().Show();//接收数据库中的数据
+                SortedSetEntry[] sortedset = new SortedSetEntry[list.Count];//创建一个数组 长度为数据库数据条数
+                //遍历sql server数据库中的数据  加入数组
+                for(int i=0;i<list.Count;i++)
+                {
+                    var value = JsonConvert.SerializeObject(list[i]);
+                    double did = Convert.ToDouble(list[i].CId);
+                    SortedSetEntry sse = new SortedSetEntry(value,did);
+                    sortedset[i] = sse;
+                }
+                db.SortedSetAdd("GetCustom", sortedset);//将数据放入有序集合  key为GetCustom value为数据
+                db.KeyExpire("GetCustom", DateTime.Now.AddMinutes(3));//设置数据库中key为key为GetCustom的集合 过期时间为3分钟
+            }
+            RedisValue[] redis=db.SortedSetRangeByRank("GetCustom");
+            return redis;
         }
         [HttpGet]
         public Custom ShowByIdCustom(int Id)
@@ -66,9 +87,27 @@ namespace RecallOnTime.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<MovieHall> SH()
+        public RedisValue[] SH()
         {
-            return MovieHallBLL.CreateMovieHallBLL().SH();
+            var conn = RedisGetConn.GetConn();//获取连接源
+            var db = conn.GetDatabase();//获取数据库
+            if (!db.KeyExists("GetMovieHallsDaSao"))//如果数据库中不存在key为GetCustom的键 则创建一个sorted set有序集合
+            {
+                List<MovieHall> list = MovieHallBLL.CreateMovieHallBLL().SH();//接收数据库中的数据
+                SortedSetEntry[] sortedset = new SortedSetEntry[list.Count];//创建一个数组 长度为数据库数据条数
+                //遍历sql server数据库中的数据  加入数组
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var value = JsonConvert.SerializeObject(list[i]);
+                    double did = Convert.ToDouble(list[i].HId);
+                    SortedSetEntry sse = new SortedSetEntry(value, did);
+                    sortedset[i] = sse;
+                }
+                db.SortedSetAdd("GetMovieHallsDaSao", sortedset);//将数据放入有序集合  key为GetCustom value为数据
+                db.KeyExpire("GetMovieHallsDaSao", DateTime.Now.AddMinutes(3));//设置数据库中key为key为GetCustom的集合 过期时间为3分钟
+            }
+            RedisValue[] redis = db.SortedSetRangeByRank("GetMovieHallsDaSao");
+            return redis;
         }
         /// <summary>
         /// 改变员工当前状态为工作中  放映厅为打扫中
@@ -131,8 +170,6 @@ namespace RecallOnTime.Controllers
             list = list.Where(s => s.MovieHallId == HId).ToList();
             return list;
         }
-        
-
         #region 微信端
         [HttpGet]
         public List<Comment> ShowMovieId(int Id)
@@ -140,6 +177,16 @@ namespace RecallOnTime.Controllers
             List<Comment> list = ShowComment();
             list = list.Where(s => s.MovieId == Id).ToList();
             return list;
+        }
+        [HttpPost]
+        public int AddCustomWX(Custom c)
+        {
+            c.C_EndTime = 0;
+            c.C_integral = 0;
+            c.C_Name = "游客";
+            c.C_State = 2;//默认为游客
+            int result = CustomBLL.CreateCustomBll().Add(c);
+            return result;
         }
         #endregion
 
