@@ -225,11 +225,11 @@ namespace RecallOnTime.Controllers
         }
         #region 微信端
         //获取所有座位信息
-        SeatBLL bl = new SeatBLL();
+        SeatBLL bll = new SeatBLL();
         [HttpGet]
         public List<Seat> GetSeats(int HId)
         {
-            List<Seat> list= bl.Show().Where(s=>s.MovieHallId==HId).ToList();
+            List<Seat> list= bll.Show().Where(s=>s.MovieHallId==HId).ToList();
             return list;
         }
         //更改座位状态
@@ -263,9 +263,6 @@ namespace RecallOnTime.Controllers
             return CustomBLL.CreateCustomBll().shouCustomTel(tel);
         }
 
-
-
-
         /// <summary>
         /// 未使用
         /// </summary>
@@ -296,34 +293,7 @@ namespace RecallOnTime.Controllers
         {
             return orderBLL.orders3(tel);
         }
-        #region 微信端
-        //获取所有座位信息
-        SeatBLL bl = new SeatBLL();
-        [HttpGet]
-        public List<Seat> GetSeats(int HId)
-        {
-            List<Seat> list = bl.Show().Where(s => s.MovieHallId == HId).ToList();
-            return list;
-        }
-        //更改座位状态
-        [HttpGet]
-        public int UpdSeatWX(string Ids)
-        {
-            string strResult = Ids.Substring(0, Ids.LastIndexOf(','));
-            int result = seatBLL.UpdSeats(strResult);
-            return result;
-        }
-
-        //添加订单 
-        [HttpPost]
-        public int AddOrderWX(Order o)
-        {
-            o.CO_State = 1;//默认  下订单
-            o.O_State = 2;//默认  未处理
-            o.O_STime = DateTime.Now;
-            int result = orderBLL.Add(o);
-            return result;
-        }
+ 
         //下单成功  减去个人余额
         [HttpPost]
         public int UpdYuE(Custom c)
@@ -331,6 +301,28 @@ namespace RecallOnTime.Controllers
             int CId= c.CId;
             float C_integral = c.C_integral;
             return CustomBLL.CreateCustomBll().UpdYuE(CId,C_integral);
+        }
+
+
+        /// <summary>
+        /// 根据用户查看历史影片
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<Movie> ShowHistory(string tel)
+        {
+            return MovieBLL.CreateMovieBLL().ShowHistory(tel);
+        }
+        /// <summary>
+        /// 修改头像
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public int UptCustomTelPhoto(string tel, string url)
+        {
+            return CustomBLL.CreateCustomBll().UptCustomTelPhoto(tel, url);
         }
         #endregion
     }

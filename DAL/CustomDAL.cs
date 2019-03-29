@@ -93,6 +93,12 @@ namespace DAL
                 return db.SaveChanges();
             }
         }
+        //修改用户名
+        public int UpdCustomName(int CId, string C_Name)
+        {
+            string sql = $"update customs set C_Name='{C_Name}' where CId={CId}";
+            return DBHelper.ExecuteNonQuery(sql);
+        }
         //充值  加积分
         public int CZ(float C_integral,int CId)
         {
@@ -124,7 +130,7 @@ namespace DAL
             List<Custom> list = JsonConvert.DeserializeObject<List<Custom>>(JsonConvert.SerializeObject(dt));
             if (list.Count == 0)
             {
-                string sql1 = "insert into Customs values ('游客','" + tel + "',0,0,'头像',2)";
+                string sql1 = "insert into Customs values ('游客','" + tel + "',0,0,'/image/timg.png',2)";
                 DBHelper.ExecuteNonQuery(sql1);
 
 
@@ -147,6 +153,19 @@ namespace DAL
                 int result= db.Database.ExecuteSqlCommand($"update Customs set C_integral=C_integral-{C_integral} where CId={CId}");
                 return result;
             }
+        }
+        /// <summary>
+        /// 修改头像
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public int UptCustomTelPhoto(string tel, string url)
+        {
+            string sql = "update Customs set C_Phote='" + url + "' where CId=(select CId from Customs where C_Cellphone='" + tel + "')";
+
+            int n = DBHelper.ExecuteNonQuery(sql);
+            return n;
         }
     }
 }

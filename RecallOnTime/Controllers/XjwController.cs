@@ -37,6 +37,13 @@ namespace RecallOnTime.Controllers
         {
             return CustomBLL.CreateCustomBll().Upd(custom);
         }
+        [HttpPost]
+        public int UpdCustomName(Custom c)
+        {
+            int CId = c.CId;
+            string C_Name = c.C_Name;
+            return CustomBLL.CreateCustomBll().UpdCustomName(CId,C_Name);
+        }
         //充值
         [HttpGet]
         public int CZ(float C_integral, int CId)
