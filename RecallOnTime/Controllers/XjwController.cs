@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BLL;
 using MODEL;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace RecallOnTime.Controllers
 {
@@ -93,8 +96,27 @@ namespace RecallOnTime.Controllers
             return CommentBLL.CreateCommentBll().Add(comment);
         }
         [HttpGet]
-        public List<Comment> ShowComment() {
-            return CommentBLL.CreateCommentBll().Show();
+        public RedisValue[] ShowComment()
+        {
+            var conn = ConnectionMultiplexerManager.GetRedisConn();
+            var db = conn.GetDatabase();
+            if (!db.KeyExists("GetComment"))
+            {
+                List<Comment> list = CommentBLL.CreateCommentBll().Show();
+                SortedSetEntry[] entries = new SortedSetEntry[list.Count];
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var value = JsonConvert.SerializeObject(list[i]);
+                    DateTime time = Convert.ToDateTime(list[i].C_Time);
+                    TimeSpan tstime = time - new DateTime(1970, 1, 1);
+                    SortedSetEntry sorted = new SortedSetEntry(value, tstime.TotalMilliseconds);
+                    entries[i] = sorted;
+                }
+                db.SortedSetAdd("GetComment", entries);
+                db.KeyExpire("GetComment", DateTime.Now.AddMinutes(3));
+            }
+             RedisValue[] ff = db.SortedSetRangeByRank("GetComment");
+             return ff;
         }
         [HttpGet]
         public Comment ShowByIdComment(int Id)

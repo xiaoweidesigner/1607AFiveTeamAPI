@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DataService;
 using MODEL;
+using Newtonsoft.Json;
+using System.Data;
 
 namespace DAL
 {
@@ -107,6 +109,34 @@ namespace DAL
             {
                 int result= db.Database.ExecuteSqlCommand($"update Customs set C_Name='{C_Name}',C_Phote='{Img}',C_State=1 where CId={CId}");
                 return result;
+            }
+        }
+        /// <summary>
+        /// 根据手机号查询
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        public List<Custom> shouCustomTel(string tel)
+        {
+
+            string sql = "select * from Customs where C_Cellphone='" + tel + "'";
+            DataTable dt = DBHelper.GetDataTable(sql);
+            List<Custom> list = JsonConvert.DeserializeObject<List<Custom>>(JsonConvert.SerializeObject(dt));
+            if (list.Count == 0)
+            {
+                string sql1 = "insert into Customs values ('游客','" + tel + "',0,0,'头像',2)";
+                DBHelper.ExecuteNonQuery(sql1);
+
+
+                string sql2 = "select * from Customs where C_Cellphone='" + tel + "'";
+                DataTable dt2 = DBHelper.GetDataTable(sql2);
+                List<Custom> list2 = JsonConvert.DeserializeObject<List<Custom>>(JsonConvert.SerializeObject(dt2));
+                return list2;
+            }
+            else
+            {
+                return list;
+
             }
         }
     }

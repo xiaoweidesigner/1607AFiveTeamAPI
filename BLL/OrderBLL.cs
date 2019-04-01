@@ -73,5 +73,32 @@ namespace BLL
         {
             return dal.ShowAll();
         }
+        /// <summary>
+        /// 未使用
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        public List<UserOrder> orders1(string tel)
+        {
+            return dal.orders1(tel);
+        }
+        /// <summary>
+        /// 已完成
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        public List<UserOrder> orders2(string tel)
+        {
+            return dal.orders2(tel);
+        }
+        /// <summary>
+        /// 已取消
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        public List<UserOrder> orders3(string tel)
+        {
+            return dal.orders3(tel);
+        }
     }
 }

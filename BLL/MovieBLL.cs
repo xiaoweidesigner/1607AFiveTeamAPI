@@ -9,7 +9,7 @@ using DAL;
 
 namespace BLL
 {
-   public  class MovieBLL
+    public class MovieBLL
     {
         private static MovieBLL bll = null;
         private MovieBLL()
@@ -77,5 +77,15 @@ namespace BLL
         {
             return MovieDAL.CreateMovieDAL().UP(MId);
         }
+        /// <summary>
+        /// 根据用户查看历史影片
+        /// </summary>
+        /// <returns></returns>
+        public List<Movie> ShowHistory(string tel)
+        {
+            return MovieDAL.CreateMovieDAL().ShowHistory(tel);
+        }
+
+
     }
 }
