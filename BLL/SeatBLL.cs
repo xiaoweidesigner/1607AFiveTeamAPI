@@ -60,7 +60,6 @@ namespace BLL
             return dal.Upd(t);
 
         }
-        //座位被选定
         public int UpdSeats(string Ids)
         {
             return dal.UpdSeats(Ids);

@@ -1,5 +1,6 @@
 ﻿using BLL;
 using MODEL;
+using RecallOnTime.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,6 +8,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using StackExchange.Redis;
+using Newtonsoft.Json;
 
 namespace RecallOnTime.Controllers
 {
@@ -69,8 +72,6 @@ namespace RecallOnTime.Controllers
         }
         #endregion
 
-
-
         #region 订单
         OrderBLL orderBLL = new OrderBLL();
         /// <summary>
@@ -79,7 +80,7 @@ namespace RecallOnTime.Controllers
         /// <param name="t"></param>
         /// <returns></returns>
         [HttpPost]
-        public int AddOrder(Order t)
+        public int AddOrder(MODEL.Order t)
         {
             return orderBLL.Add(t);
         }
@@ -105,21 +106,27 @@ namespace RecallOnTime.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<Order> ShowOrder()
+        public RedisValue[] ShowOrder()
         {
-            return orderBLL.Show();
-
-        }
-        /// <summary>
-        /// 根据ID查询
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public Order ShowByIdOrder(int Id)
-        {
-            return orderBLL.ShowById(Id);
-
+            var conn = RedisGetConn.GetConn();//获取连接源
+            var db = conn.GetDatabase();//获取数据库
+            if (!db.KeyExists("GetOrders"))//如果数据库中不存在key为GetCustom的键 则创建一个sorted set有序集合
+            {
+                List<MODEL.Order> list = orderBLL.Show();//接收数据库中的数据
+                SortedSetEntry[] sortedset = new SortedSetEntry[list.Count];//创建一个数组 长度为数据库数据条数
+                //遍历sql server数据库中的数据  加入数组
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var value = JsonConvert.SerializeObject(list[i]);
+                    double did = Convert.ToDouble(list[i].OId);
+                    SortedSetEntry sse = new SortedSetEntry(value, did);
+                    sortedset[i] = sse;
+                }
+                db.SortedSetAdd("GetOrders", sortedset);//将数据放入有序集合  key为GetCustom value为数据
+                db.KeyExpire("GetOrders", DateTime.Now.AddMinutes(3));//设置数据库中key为key为GetCustom的集合 过期时间为3分钟
+            }
+            RedisValue[] redis = db.SortedSetRangeByRank("GetOrders");
+            return redis;
         }
         /// <summary>
         /// 修改订单
@@ -127,7 +134,7 @@ namespace RecallOnTime.Controllers
         /// <param name="t"></param>
         /// <returns></returns>
         [HttpPut]
-        public int UpdOrder(Order t)
+        public int UpdOrder(MODEL.Order t)
         {
             return orderBLL.Upd(t);
 
@@ -137,9 +144,27 @@ namespace RecallOnTime.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<OMCH> ShowAll()
+        public RedisValue[] ShowAll()
         {
-            return orderBLL.ShowAll();
+            var conn = RedisGetConn.GetConn();//获取连接源
+            var db = conn.GetDatabase();//获取数据库
+            if (!db.KeyExists("GetOMCH"))//如果数据库中不存在key为GetCustom的键 则创建一个sorted set有序集合
+            {
+                List<OMCH> list = orderBLL.ShowAll();//接收数据库中的数据
+                SortedSetEntry[] sortedset = new SortedSetEntry[list.Count];//创建一个数组 长度为数据库数据条数
+                //遍历sql server数据库中的数据  加入数组
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var value = JsonConvert.SerializeObject(list[i]);
+                    double did = Convert.ToDouble(list[i].OId);
+                    SortedSetEntry sse = new SortedSetEntry(value, did);
+                    sortedset[i] = sse;
+                }
+                db.SortedSetAdd("GetOMCH", sortedset);//将数据放入有序集合  key为GetCustom value为数据
+                db.KeyExpire("GetOMCH", DateTime.Now.AddMinutes(3));//设置数据库中key为key为GetCustom的集合 过期时间为3分钟
+            }
+            RedisValue[] redis = db.SortedSetRangeByRank("GetOMCH");
+            return redis;
         }
         #endregion
 
@@ -225,11 +250,11 @@ namespace RecallOnTime.Controllers
         }
         #region 微信端
         //获取所有座位信息
-        SeatBLL bl = new SeatBLL();
+        SeatBLL bll = new SeatBLL();
         [HttpGet]
         public List<Seat> GetSeats(int HId)
         {
-            List<Seat> list= bl.Show().Where(s=>s.MovieHallId==HId).ToList();
+            List<Seat> list= bll.Show().Where(s=>s.MovieHallId==HId).ToList();
             return list;
         }
         //更改座位状态
@@ -243,7 +268,7 @@ namespace RecallOnTime.Controllers
         
         //添加订单 
         [HttpPost]
-        public int AddOrderWX(Order o)
+        public int AddOrderWX(MODEL.Order o)
         {
             o.CO_State = 1;//默认  下订单
             o.O_State = 2;//默认  未处理
@@ -262,10 +287,6 @@ namespace RecallOnTime.Controllers
         {
             return CustomBLL.CreateCustomBll().shouCustomTel(tel);
         }
-
-
-
-
         /// <summary>
         /// 未使用
         /// </summary>
@@ -296,6 +317,14 @@ namespace RecallOnTime.Controllers
         {
             return orderBLL.orders3(tel);
         }
+        //下单成功  减去个人余额
+        [HttpPost]
+        public int UpdYuE(Custom c)
+        {
+            int CId= c.CId;
+            float C_integral = c.C_integral;
+            return CustomBLL.CreateCustomBll().UpdYuE(CId,C_integral);
+        }
 
 
         /// <summary>
@@ -307,7 +336,17 @@ namespace RecallOnTime.Controllers
         {
             return MovieBLL.CreateMovieBLL().ShowHistory(tel);
         }
+        /// <summary>
+        /// 修改头像
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public int UptCustomTelPhoto(string tel, string url)
+        {
+            return CustomBLL.CreateCustomBll().UptCustomTelPhoto(tel, url);
+        }
         #endregion
-
     }
 }

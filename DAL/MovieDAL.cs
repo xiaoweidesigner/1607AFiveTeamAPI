@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataService;
 using MODEL;
 using Newtonsoft.Json;
+
 namespace DAL
 {
     public class MovieDAL : ICommon<Movie>
@@ -101,7 +102,6 @@ namespace DAL
             }
         }
 
-
         /// <summary>
         /// 根据用户查看历史影片
         /// </summary>
@@ -110,7 +110,7 @@ namespace DAL
         {
             string sql = @"select * from movies where mid in (select distinct movieid from sessions where sid in (
                           select distinct sessionsid from orders where customid = (select cid from customs where c_cellphone = '" + tel + "') and co_state = 1 and o_stime<getdate())) ";
-            return  JsonConvert.DeserializeObject<List<Movie>>(JsonConvert.SerializeObject(DBHelper.GetDataTable(sql)));
+            return JsonConvert.DeserializeObject<List<Movie>>(JsonConvert.SerializeObject(DBHelper.GetDataTable(sql)));
         }
     }
 }

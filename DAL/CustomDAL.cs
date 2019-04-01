@@ -93,6 +93,12 @@ namespace DAL
                 return db.SaveChanges();
             }
         }
+        //修改用户名
+        public int UpdCustomName(int CId, string C_Name)
+        {
+            string sql = $"update customs set C_Name='{C_Name}' where CId={CId}";
+            return DBHelper.ExecuteNonQuery(sql);
+        }
         //充值  加积分
         public int CZ(float C_integral,int CId)
         {
@@ -110,6 +116,56 @@ namespace DAL
                 int result= db.Database.ExecuteSqlCommand($"update Customs set C_Name='{C_Name}',C_Phote='{Img}',C_State=1 where CId={CId}");
                 return result;
             }
+        }
+        /// <summary>
+        /// 根据手机号查询
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <returns></returns>
+        public List<Custom> shouCustomTel(string tel)
+        {
+
+            string sql = "select * from Customs where C_Cellphone='" + tel + "'";
+            DataTable dt = DBHelper.GetDataTable(sql);
+            List<Custom> list = JsonConvert.DeserializeObject<List<Custom>>(JsonConvert.SerializeObject(dt));
+            if (list.Count == 0)
+            {
+                string sql1 = "insert into Customs values ('游客','" + tel + "',0,0,'/image/timg.png',2)";
+                DBHelper.ExecuteNonQuery(sql1);
+
+
+                string sql2 = "select * from Customs where C_Cellphone='" + tel + "'";
+                DataTable dt2 = DBHelper.GetDataTable(sql2);
+                List<Custom> list2 = JsonConvert.DeserializeObject<List<Custom>>(JsonConvert.SerializeObject(dt2));
+                return list2;
+            }
+            else
+            {
+                return list;
+
+            }
+        }
+        //下单成功  减去个人余额
+        public int UpdYuE(int CId, float C_integral)
+        {
+            using (MyDbContext db=new MyDbContext())
+            {
+                int result= db.Database.ExecuteSqlCommand($"update Customs set C_integral=C_integral-{C_integral} where CId={CId}");
+                return result;
+            }
+        }
+        /// <summary>
+        /// 修改头像
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public int UptCustomTelPhoto(string tel, string url)
+        {
+            string sql = "update Customs set C_Phote='" + url + "' where CId=(select CId from Customs where C_Cellphone='" + tel + "')";
+
+            int n = DBHelper.ExecuteNonQuery(sql);
+            return n;
         }
         /// <summary>
         /// 根据手机号查询

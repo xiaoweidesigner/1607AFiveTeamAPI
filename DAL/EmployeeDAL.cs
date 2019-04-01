@@ -91,21 +91,6 @@ namespace DAL
             }
         }
         /// <summary>
-        /// 登录
-        /// </summary>
-        /// <param name="E_Account"></param>
-        /// <param name="E_Pwd"></param>
-        /// <returns></returns>
-        public Employee Login(string E_Account, string E_Pwd)
-        {
-            using (MyDbContext db=new MyDbContext())
-            {
-                db.Database.CreateIfNotExists();
-                Employee e= db.Database.SqlQuery<Employee>($"select * from Employees where E_Account='{E_Account}' and E_Pwd='{E_Pwd}'").FirstOrDefault();
-                return e;
-            }
-        }
-        /// <summary>
         /// 改变员工当前状态为工作中  改变放映厅当前状态为打扫中
         /// </summary>
         /// <returns></returns>

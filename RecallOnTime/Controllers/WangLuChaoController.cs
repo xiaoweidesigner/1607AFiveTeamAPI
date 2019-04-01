@@ -8,6 +8,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Newtonsoft.Json;
+using StackExchange.Redis;
+using RecallOnTime.Models;
 
 namespace RecallOnTime.Controllers
 {
@@ -28,9 +31,27 @@ namespace RecallOnTime.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<DepartMent> ShowDepartMent()
+        public RedisValue[] ShowDepartMent()
         {
-            return DepartMentBLL.CreateDepartMentBLL().Show();
+            var conn = RedisGetConn.GetConn();//获取连接源
+            var db = conn.GetDatabase();//获取数据库
+            if (!db.KeyExists("GetDepartMent"))//如果数据库中不存在key为GetCustom的键 则创建一个sorted set有序集合
+            {
+                List<DepartMent> list = DepartMentBLL.CreateDepartMentBLL().Show(); ;//接收数据库中的数据
+                SortedSetEntry[] sortedset = new SortedSetEntry[list.Count];//创建一个数组 长度为数据库数据条数
+                //遍历sql server数据库中的数据  加入数组
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var value = JsonConvert.SerializeObject(list[i]);
+                    double did = Convert.ToDouble(list[i].DId);
+                    SortedSetEntry sse = new SortedSetEntry(value, did);
+                    sortedset[i] = sse;
+                }
+                db.SortedSetAdd("GetDepartMent", sortedset);//将数据放入有序集合  key为GetCustom value为数据
+                db.KeyExpire("GetDepartMent", DateTime.Now.AddMinutes(3));//设置数据库中key为key为GetCustom的集合 过期时间为3分钟
+            }
+            RedisValue[] redis = db.SortedSetRangeByRank("GetDepartMent");
+            return redis;
         }
         /// <summary>
         /// 添加员工
@@ -43,13 +64,31 @@ namespace RecallOnTime.Controllers
             return EmployeeBLL.CreateEmployeeBLL().Add(de);
         }
         /// <summary>
-        /// 显示员工
+        /// 显示员工   登陆
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<Employee> ShowEmployee()
+        public RedisValue[] ShowEmployee()
         {
-            return EmployeeBLL.CreateEmployeeBLL().Show();
+            var conn = RedisGetConn.GetConn();//获取连接源
+            var db = conn.GetDatabase();//获取数据库
+            if (!db.KeyExists("GetEmployee"))//如果数据库中不存在key为GetCustom的键 则创建一个sorted set有序集合
+            {
+                List<Employee> list = EmployeeBLL.CreateEmployeeBLL().Show();//接收数据库中的数据
+                SortedSetEntry[] sortedset = new SortedSetEntry[list.Count];//创建一个数组 长度为数据库数据条数
+                //遍历sql server数据库中的数据  加入数组
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var value = JsonConvert.SerializeObject(list[i]);
+                    double did = Convert.ToDouble(list[i].EId);
+                    SortedSetEntry sse = new SortedSetEntry(value, did);
+                    sortedset[i] = sse;
+                }
+                db.SortedSetAdd("GetEmployee", sortedset);//将数据放入有序集合  key为GetCustom value为数据
+                db.KeyExpire("GetEmployee", DateTime.Now.AddMinutes(3));//设置数据库中key为key为GetCustom的集合 过期时间为3分钟
+            }
+            RedisValue[] redis = db.SortedSetRangeByRank("GetEmployee");
+            return redis;
         }
         [HttpGet]
         public Employee ShowEmployeeId(int Id)
@@ -66,26 +105,27 @@ namespace RecallOnTime.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<Comment> ShowComment()
+        public RedisValue[] ShowComments()
         {
-            var conn = ConnectionMultiplexerManager.GetRedisConn();
-            var db = conn.GetDatabase();
-            if (!db.KeyExists("GetComment"))
+            var conn = RedisGetConn.GetConn();//获取连接源
+            var db = conn.GetDatabase();//获取数据库
+            if (!db.KeyExists("GetComments"))//如果数据库中不存在key为GetCustom的键 则创建一个sorted set有序集合
             {
-                List<Comment> list = CommentBLL.CreateCommentBll().Show();
-                SortedSetEntry[] entries = new SortedSetEntry[list.Count];
+                List<Comment> list = CommentBLL.CreateCommentBll().Show();//接收数据库中的数据
+                SortedSetEntry[] sortedset = new SortedSetEntry[list.Count];//创建一个数组 长度为数据库数据条数
+                //遍历sql server数据库中的数据  加入数组
                 for (int i = 0; i < list.Count; i++)
                 {
                     var value = JsonConvert.SerializeObject(list[i]);
-                    DateTime time = Convert.ToDateTime(list[i].C_Time);
-                    TimeSpan tstime = time - new DateTime(1970, 1, 1);
-                    SortedSetEntry sorted = new SortedSetEntry(value, tstime.TotalMilliseconds);
-                    entries[i] = sorted;
+                    double did = Convert.ToDouble(list[i].CoId);
+                    SortedSetEntry sse = new SortedSetEntry(value, did);
+                    sortedset[i] = sse;
                 }
-                db.SortedSetAdd("GetComment", entries);
-                db.KeyExpire("GetComment",DateTime.Now.AddMinutes(3));
+                db.SortedSetAdd("GetComments", sortedset);//将数据放入有序集合  key为GetCustom value为数据
+                db.KeyExpire("GetComments", DateTime.Now.AddMinutes(3));//设置数据库中key为key为GetCustom的集合 过期时间为3分钟
             }
-            return JsonConvert.DeserializeObject<List<Comment>>(JsonConvert.SerializeObject(db.SortedSetRangeByRank("GetComment")));
+            RedisValue[] redis = db.SortedSetRangeByRank("GetComments");
+            return redis;
         }
         /// <summary>
         /// 删除评论信息
@@ -97,21 +137,32 @@ namespace RecallOnTime.Controllers
         {
             return CommentBLL.CreateCommentBll().Del(Id);
         }
-
-        //员工/管理员登录
-        [HttpGet]
-        public Employee Login(string E_Account, string E_Pwd)
-        {
-            return EmployeeBLL.CreateEmployeeBLL().Login(E_Account, E_Pwd);
-        }
         /// <summary>
         /// 显示金额
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public List<Finance> ShowFinances()
+        public RedisValue[] ShowFinances()
         {
-            return FinanceBLL.CreateFinanceBLL().ShowFinance();
+            var conn = RedisGetConn.GetConn();//获取连接源
+            var db = conn.GetDatabase();//获取数据库
+            if (!db.KeyExists("GetFinance"))//如果数据库中不存在key为GetCustom的键 则创建一个sorted set有序集合
+            {
+                List<Finance> list = FinanceBLL.CreateFinanceBLL().ShowFinance();//接收数据库中的数据
+                SortedSetEntry[] sortedset = new SortedSetEntry[list.Count];//创建一个数组 长度为数据库数据条数
+                //遍历sql server数据库中的数据  加入数组
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var value = JsonConvert.SerializeObject(list[i]);
+                    double did = Convert.ToDouble(list[i].FId);
+                    SortedSetEntry sse = new SortedSetEntry(value, did);
+                    sortedset[i] = sse;
+                }
+                db.SortedSetAdd("GetFinance", sortedset);//将数据放入有序集合  key为GetCustom value为数据
+                db.KeyExpire("GetFinance", DateTime.Now.AddMinutes(3));//设置数据库中key为key为GetCustom的集合 过期时间为3分钟
+            }
+            RedisValue[] redis = db.SortedSetRangeByRank("GetComments");
+            return redis;
         }
         public IEnumerable<dynamic> GetBanner()
         {

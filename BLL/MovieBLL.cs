@@ -85,7 +85,5 @@ namespace BLL
         {
             return MovieDAL.CreateMovieDAL().ShowHistory(tel);
         }
-
-
     }
 }

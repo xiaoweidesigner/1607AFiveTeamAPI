@@ -51,6 +51,11 @@ namespace BLL
         {
             return CustomDAL.CreateCustomDal().Upd(t);
         }
+        //修改用户名
+        public int UpdCustomName(int CId, string C_Name)
+        {
+            return CustomDAL.CreateCustomDal().UpdCustomName(CId,C_Name);
+        }
         //充值
         public int CZ(float C_integral, int CId)
         {
@@ -69,6 +74,21 @@ namespace BLL
         public List<Custom> shouCustomTel(string tel)
         {
             return CustomDAL.CreateCustomDal().shouCustomTel(tel);
+        }
+        //下单成功  减去个人余额
+        public int UpdYuE(int CId, float C_integral)
+        {
+            return CustomDAL.CreateCustomDal().UpdYuE(CId, C_integral);
+        }
+        /// <summary>
+        /// 修改头像
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public int UptCustomTelPhoto(string tel, string url)
+        {
+            return CustomDAL.CreateCustomDal().UptCustomTelPhoto(tel, url);
         }
     }
 }
